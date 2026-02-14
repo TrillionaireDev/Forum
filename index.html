@@ -125,10 +125,9 @@
 <body>
 
 <div class="browser-window">
-  <!-- Search field with Text and Date buttons -->
+  <!-- Search field with only Date button -->
   <div class="search-container">
     <input type="text" placeholder="Search" id="searchInput">
-    <button id="textBtn">Text</button>
     <button id="dateBtn">Date</button>
   </div>
 
@@ -156,6 +155,7 @@
 
   const buttonField = document.getElementById('buttonField');
   const tabs = document.querySelectorAll('.tab');
+  const dateBtn = document.getElementById('dateBtn');
 
   function renderButtons(tabNumber) {
     buttonField.innerHTML = '';
@@ -178,18 +178,9 @@
     });
   });
 
-  // Search input & buttons (can hook later for filtering)
-  const searchInput = document.getElementById('searchInput');
-  const textBtn = document.getElementById('textBtn');
-  const dateBtn = document.getElementById('dateBtn');
-
-  // Example placeholders for click actions
-  textBtn.addEventListener('click', () => {
-    alert("Text filter clicked. Can implement filtering later.");
-  });
-
+  // Date button placeholder
   dateBtn.addEventListener('click', () => {
-    alert("Date filter clicked. Can implement sorting later.");
+    alert("Date button clicked. Can implement sorting later.");
   });
 </script>
 
