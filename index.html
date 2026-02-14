@@ -133,7 +133,7 @@
 
   <!-- Browser tabs -->
   <div class="browser-tabs">
-    <div class="tab active" data-tab="1">Coin</div>
+    <div class="tab" data-tab="1">Coin</div>
     <div class="tab" data-tab="2">Updates</div>
     <div class="tab" data-tab="3">Thoughts</div>
     <div class="tab" data-tab="4">Bots</div>
@@ -141,7 +141,7 @@
 
   <!-- Button field -->
   <div class="button-field" id="buttonField">
-    <!-- Buttons render dynamically -->
+    <!-- Initially empty until a tab is clicked -->
   </div>
 </div>
 
@@ -168,8 +168,7 @@
     });
   }
 
-  renderButtons(1); // initialize first tab
-
+  // Tabs are inactive at first; no active class
   tabs.forEach(tab => {
     tab.addEventListener('click', () => {
       tabs.forEach(t => t.classList.remove('active'));
@@ -182,6 +181,8 @@
   dateBtn.addEventListener('click', () => {
     alert("Date button clicked. Can implement sorting later.");
   });
+
+  // Page starts in search field, button field empty
 </script>
 
 </body>
