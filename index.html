@@ -25,6 +25,29 @@
     overflow: hidden;
   }
 
+  /* Big forum header button */
+  .forum-header {
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+    background: #222;
+    border-bottom: 2px solid #333;
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #caa6ff;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  .forum-header.active {
+    background: #0a0a0a;
+  }
+
+  .forum-header:hover {
+    background: #1a1a1a;
+  }
+
+  /* Browser tabs */
   .browser-tabs {
     display: flex;
     background: #222;
@@ -56,6 +79,7 @@
     background: #1a1a1a;
   }
 
+  /* Button field */
   .button-field {
     padding: 20px;
     display: grid;
@@ -79,7 +103,6 @@
     background: #222;
   }
 
-  /* First button spans full width */
   .button-field button.full-width {
     grid-column: 1 / -1;
   }
@@ -88,20 +111,26 @@
 <body>
 
 <div class="browser-window">
+  <!-- Big forum header -->
+  <div class="forum-header active" data-tab="0">DrugFreeInu Forum</div>
+
+  <!-- Browser tabs -->
   <div class="browser-tabs">
-    <div class="tab active" data-tab="1">Coin</div>
+    <div class="tab" data-tab="1">Coin</div>
     <div class="tab" data-tab="2">Updates</div>
     <div class="tab" data-tab="3">Thoughts</div>
     <div class="tab" data-tab="4">Bots</div>
   </div>
 
+  <!-- Button field -->
   <div class="button-field" id="buttonField">
-    <!-- Buttons for the current tab will render here -->
+    <!-- Buttons render dynamically -->
   </div>
 </div>
 
 <script>
   const tabButtons = {
+    0: ["Welcome Post"], // DrugFreeInu Forum main page
     1: ["Main Coin Info", "Button 2", "Button 3", "Button 4", "Button 5"],
     2: ["Latest Update", "Button B", "Button C", "Button D", "Button E"],
     3: ["Thought Highlight", "Two", "Three", "Four", "Five"],
@@ -110,6 +139,7 @@
 
   const buttonField = document.getElementById('buttonField');
   const tabs = document.querySelectorAll('.tab');
+  const forumHeader = document.querySelector('.forum-header');
 
   function renderButtons(tabNumber) {
     buttonField.innerHTML = '';
@@ -117,19 +147,29 @@
     buttons.forEach((label, index) => {
       const btn = document.createElement('button');
       btn.textContent = `${index+1}. ${label}`;
-      if (index === 0) btn.classList.add('full-width'); // first button full width
+      if (index === 0) btn.classList.add('full-width'); // first button spans full width
       buttonField.appendChild(btn);
     });
   }
 
-  renderButtons(1); // initialize first tab
+  // Initialize main page
+  renderButtons(0);
 
+  // Tab click
   tabs.forEach(tab => {
     tab.addEventListener('click', () => {
       tabs.forEach(t => t.classList.remove('active'));
+      forumHeader.classList.remove('active');
       tab.classList.add('active');
       renderButtons(tab.getAttribute('data-tab'));
     });
+  });
+
+  // Forum header click
+  forumHeader.addEventListener('click', () => {
+    tabs.forEach(t => t.classList.remove('active'));
+    forumHeader.classList.add('active');
+    renderButtons(0);
   });
 </script>
 
