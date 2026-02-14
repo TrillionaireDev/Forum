@@ -29,7 +29,6 @@
     flex-direction: column;
   }
 
-  /* Search field container */
   .search-container {
     display: flex;
     padding: 15px 20px;
@@ -65,7 +64,6 @@
     background: #222;
   }
 
-  /* Browser tabs */
   .browser-tabs {
     display: flex;
     background: #222;
@@ -88,7 +86,17 @@
   .tab.active { background: #0a0a0a; color: #caa6ff; }
   .tab:hover { background: #1a1a1a; }
 
-  /* Button field */
+  /* Title container for selected post */
+  #postTitle {
+    display: none;
+    flex-direction: column;
+    padding: 10px 20px;
+    color: #caa6ff;
+    font-weight: bold;
+  }
+  #postDate { font-size: 0.9rem; }
+  #postHeader { font-size: 1.2rem; margin-top: 4px; }
+
   .button-field {
     padding: 20px;
     display: grid;
@@ -97,7 +105,7 @@
     gap: 12px;
     flex-grow: 1;
     overflow-y: auto;
-    min-height: 180px; /* keeps size stable */
+    min-height: 180px;
   }
 
   .button-field button {
@@ -131,10 +139,9 @@
     font-size: 1rem;
   }
 
-  /* iframe styling */
   .button-field iframe {
     width: 100%;
-    height: 180px; /* same as min-height for consistency */
+    height: 180px;
     border: none;
   }
 </style>
@@ -156,6 +163,12 @@
     <div class="tab" data-file="">Bots</div>
   </div>
 
+  <!-- Post title -->
+  <div id="postTitle">
+    <div id="postDate"></div>
+    <div id="postHeader"></div>
+  </div>
+
   <!-- Button field -->
   <div class="button-field" id="buttonField"></div>
 </div>
@@ -164,17 +177,21 @@
 const buttonField = document.getElementById('buttonField');
 const tabs = document.querySelectorAll('.tab');
 const dateBtn = document.getElementById('dateBtn');
+const postTitle = document.getElementById('postTitle');
+const postDate = document.getElementById('postDate');
+const postHeader = document.getElementById('postHeader');
 
 // Default start message
 function renderDefaultMessage() {
   buttonField.innerHTML = '';
+  postTitle.style.display = 'none';
   const btn = document.createElement('button');
   btn.textContent = "This forum is the official source of information about DrugFreeInu. Select a topic to explore the ideas and beliefs of DrugFreeInu’s developer.";
   btn.classList.add('full-width');
   buttonField.appendChild(btn);
 }
 
-renderDefaultMessage(); // show default message on page load
+renderDefaultMessage();
 
 // Tabs click behavior
 tabs.forEach(tab => {
@@ -189,11 +206,22 @@ tabs.forEach(tab => {
       buttonField.innerHTML = '';
       const iframe = document.createElement('iframe');
       iframe.src = file;
+      iframe.onload = () => {
+        // Listen for clicks inside iframe
+        iframe.contentWindow.document.querySelectorAll('button').forEach(btn => {
+          btn.addEventListener('click', () => {
+            postDate.textContent = 'February 14, 2026';
+            postHeader.textContent = btn.textContent;
+            postTitle.style.display = 'flex';
+          });
+        });
+      };
       buttonField.appendChild(iframe);
     } else {
-      // Other tabs blank but keep size
+      // Other tabs blank
       buttonField.innerHTML = '';
       buttonField.style.minHeight = '180px';
+      postTitle.style.display = 'none';
     }
   });
 });
