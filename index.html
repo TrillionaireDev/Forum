@@ -202,7 +202,7 @@
     buttons.forEach((label, index) => {
       const btn = document.createElement('button');
       btn.textContent = `${index+1}. ${label}`;
-      if (index === 0) btn.classList.add('full-width');
+      if (index === 0) btn.classList.add('full-width'); // first button uses full-width styling
       buttonField.appendChild(btn);
     });
   }
