@@ -133,7 +133,7 @@
     justify-content: center;
     text-align: center;
     padding: 20px;
-    height: 100%;
+    min-height: 140px; /* ensures first button matches default message */
     line-height: 1.4;
     white-space: normal;
     word-wrap: break-word;
@@ -202,7 +202,8 @@
     buttons.forEach((label, index) => {
       const btn = document.createElement('button');
       btn.textContent = `${index+1}. ${label}`;
-      if (index === 0) btn.classList.add('full-width'); // first button uses full-width styling
+      // First button in tab gets full-width styling to match default
+      if (index === 0) btn.classList.add('full-width');
       buttonField.appendChild(btn);
     });
   }
