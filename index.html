@@ -14,13 +14,13 @@
     color: #e0e0e0;
     display: flex;
     justify-content: center;
-    align-items: center; /* vertical center */
+    align-items: center;
   }
 
   .browser-window {
     width: 90%;
     max-width: 900px;
-    min-height: 500px; /* prevents squishing */
+    min-height: 500px;
     border: 2px solid #333;
     border-radius: 10px;
     background: #111;
@@ -97,25 +97,27 @@
     background: #1a1a1a;
   }
 
-  /* Button field below tabs */
+  /* Button field */
   .button-field {
     padding: 20px;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    grid-auto-rows: minmax(80px, auto);
     gap: 12px;
-    flex-grow: 1; /* allows button field to expand and fill space */
-    overflow-y: auto; /* scroll if too many buttons */
+    flex-grow: 1;
+    overflow-y: auto;
   }
 
   .button-field button {
-    padding: 12px;
+    padding: 14px;
     border: 2px solid #333;
-    border-radius: 6px;
+    border-radius: 8px;
     background: #111;
     color: #caa6ff;
     font-weight: bold;
     cursor: pointer;
     transition: 0.2s;
+    text-align: center;
   }
 
   .button-field button:hover {
@@ -146,9 +148,7 @@
   </div>
 
   <!-- Button field -->
-  <div class="button-field" id="buttonField">
-    <!-- Initially empty until a tab is clicked -->
-  </div>
+  <div class="button-field" id="buttonField"></div>
 </div>
 
 <script>
@@ -169,7 +169,7 @@
     buttons.forEach((label, index) => {
       const btn = document.createElement('button');
       btn.textContent = `${index+1}. ${label}`;
-      if (index === 0) btn.classList.add('full-width'); // first button full width
+      if (index === 0) btn.classList.add('full-width'); // first button spans full width
       buttonField.appendChild(btn);
     });
   }
@@ -183,12 +183,11 @@
     });
   });
 
-  // Date button placeholder
   dateBtn.addEventListener('click', () => {
     alert("Date button clicked. Can implement sorting later.");
   });
 
-  // Page starts in search field with empty button field
+  // Page loads in search mode; button field empty
 </script>
 
 </body>
