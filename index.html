@@ -14,16 +14,19 @@
     color: #e0e0e0;
     display: flex;
     justify-content: center;
-    align-items: center; /* vertically center */
+    align-items: center; /* vertical center */
   }
 
   .browser-window {
     width: 90%;
     max-width: 900px;
+    min-height: 500px; /* prevents squishing */
     border: 2px solid #333;
     border-radius: 10px;
     background: #111;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
   }
 
   /* Search field container */
@@ -100,6 +103,8 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     gap: 12px;
+    flex-grow: 1; /* allows button field to expand and fill space */
+    overflow-y: auto; /* scroll if too many buttons */
   }
 
   .button-field button {
@@ -169,7 +174,7 @@
     });
   }
 
-  // Tabs are inactive at first; page starts with search field
+  // Tabs are inactive at first; page starts in search mode
   tabs.forEach(tab => {
     tab.addEventListener('click', () => {
       tabs.forEach(t => t.classList.remove('active'));
@@ -182,6 +187,8 @@
   dateBtn.addEventListener('click', () => {
     alert("Date button clicked. Can implement sorting later.");
   });
+
+  // Page starts in search field with empty button field
 </script>
 
 </body>
