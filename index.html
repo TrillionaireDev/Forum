@@ -32,7 +32,7 @@
   }
 
   .tab {
-    flex: 1;
+    flex: 1; /* Evenly space tabs */
     padding: 10px 0;
     cursor: pointer;
     background: #222;
@@ -40,7 +40,11 @@
     border-right: 1px solid #333;
     transition: 0.2s;
     font-weight: bold;
-    text-align: center; /* Center tab titles */
+    text-align: center;
+  }
+
+  .tab:last-child {
+    border-right: none; /* Remove right border for last tab */
   }
 
   .tab.active {
@@ -84,7 +88,6 @@
     <div class="tab" data-tab="2">Updates</div>
     <div class="tab" data-tab="3">Thoughts</div>
     <div class="tab" data-tab="4">Bots</div>
-    <div class="tab" data-tab="5">Tab 5</div>
   </div>
 
   <div class="button-field" id="buttonField">
@@ -98,8 +101,7 @@
     1: ["Button 1", "Button 2", "Button 3", "Button 4", "Button 5"],
     2: ["Button A", "Button B", "Button C", "Button D", "Button E"],
     3: ["One", "Two", "Three", "Four", "Five"],
-    4: ["Bot Alpha", "Bot Beta", "Bot Gamma", "Bot Delta", "Bot Epsilon"],
-    5: ["Red", "Green", "Blue", "Yellow", "Purple"]
+    4: ["Bot Alpha", "Bot Beta", "Bot Gamma", "Bot Delta", "Bot Epsilon"]
   };
 
   const buttonField = document.getElementById('buttonField');
