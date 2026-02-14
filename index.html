@@ -32,7 +32,7 @@
   }
 
   .tab {
-    flex: 1; /* Evenly space tabs */
+    flex: 1;
     padding: 10px 0;
     cursor: pointer;
     background: #222;
@@ -44,7 +44,7 @@
   }
 
   .tab:last-child {
-    border-right: none; /* Remove right border for last tab */
+    border-right: none;
   }
 
   .tab.active {
@@ -78,6 +78,11 @@
     border-color: #caa6ff;
     background: #222;
   }
+
+  /* First button spans full width */
+  .button-field button.full-width {
+    grid-column: 1 / -1;
+  }
 </style>
 </head>
 <body>
@@ -96,12 +101,11 @@
 </div>
 
 <script>
-  // Define buttons for each tab
   const tabButtons = {
-    1: ["Button 1", "Button 2", "Button 3", "Button 4", "Button 5"],
-    2: ["Button A", "Button B", "Button C", "Button D", "Button E"],
-    3: ["One", "Two", "Three", "Four", "Five"],
-    4: ["Bot Alpha", "Bot Beta", "Bot Gamma", "Bot Delta", "Bot Epsilon"]
+    1: ["Main Coin Info", "Button 2", "Button 3", "Button 4", "Button 5"],
+    2: ["Latest Update", "Button B", "Button C", "Button D", "Button E"],
+    3: ["Thought Highlight", "Two", "Three", "Four", "Five"],
+    4: ["Primary Bot", "Bot Beta", "Bot Gamma", "Bot Delta", "Bot Epsilon"]
   };
 
   const buttonField = document.getElementById('buttonField');
@@ -113,14 +117,13 @@
     buttons.forEach((label, index) => {
       const btn = document.createElement('button');
       btn.textContent = `${index+1}. ${label}`;
+      if (index === 0) btn.classList.add('full-width'); // first button full width
       buttonField.appendChild(btn);
     });
   }
 
-  // Initialize first tab
-  renderButtons(1);
+  renderButtons(1); // initialize first tab
 
-  // Tab click
   tabs.forEach(tab => {
     tab.addEventListener('click', () => {
       tabs.forEach(t => t.classList.remove('active'));
