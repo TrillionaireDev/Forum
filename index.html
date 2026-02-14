@@ -29,7 +29,6 @@
     flex-direction: column;
   }
 
-  /* Search field container */
   .search-container {
     display: flex;
     padding: 15px 20px;
@@ -65,7 +64,6 @@
     background: #222;
   }
 
-  /* Browser tabs */
   .browser-tabs {
     display: flex;
     background: #222;
@@ -97,7 +95,6 @@
     background: #1a1a1a;
   }
 
-  /* Button field */
   .button-field {
     padding: 20px;
     display: grid;
@@ -133,7 +130,7 @@
 <body>
 
 <div class="browser-window">
-  <!-- Search field with only Date button -->
+  <!-- Search field -->
   <div class="search-container">
     <input type="text" placeholder="Search" id="searchInput">
     <button id="dateBtn">Date</button>
@@ -152,6 +149,7 @@
 </div>
 
 <script>
+  // Tab buttons content
   const tabButtons = {
     1: ["Main Coin Info", "Button 2", "Button 3", "Button 4", "Button 5"],
     2: ["Latest Update", "Button B", "Button C", "Button D", "Button E"],
@@ -163,31 +161,44 @@
   const tabs = document.querySelectorAll('.tab');
   const dateBtn = document.getElementById('dateBtn');
 
+  // Default start message in the search field
+  function renderDefaultMessage() {
+    buttonField.innerHTML = '';
+    const btn = document.createElement('button');
+    btn.textContent = "This forum is the official source of information about DrugFreeInu. Select a topic to explore the mind of the DrugFreeInu’s developer.";
+    btn.classList.add('full-width');
+    buttonField.appendChild(btn);
+  }
+
+  renderDefaultMessage(); // show default message on page load
+
+  // Tabs click behavior
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const tabNumber = tab.getAttribute('data-tab');
+      renderButtons(tabNumber);
+    });
+  });
+
+  // Render buttons for a tab
   function renderButtons(tabNumber) {
     buttonField.innerHTML = '';
     const buttons = tabButtons[tabNumber] || [];
     buttons.forEach((label, index) => {
       const btn = document.createElement('button');
       btn.textContent = `${index+1}. ${label}`;
-      if (index === 0) btn.classList.add('full-width'); // first button spans full width
+      if (index === 0) btn.classList.add('full-width');
       buttonField.appendChild(btn);
     });
   }
 
-  // Tabs are inactive at first; page starts in search mode
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      tabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      renderButtons(tab.getAttribute('data-tab'));
-    });
-  });
-
+  // Date button placeholder
   dateBtn.addEventListener('click', () => {
-    alert("Date button clicked. Can implement sorting later.");
+    alert("Date button clicked.");
   });
 
-  // Page loads in search mode; button field empty
 </script>
 
 </body>
