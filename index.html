@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DFI Forum Browser</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, sans-serif;
+    background: #0a0a0a;
+    color: #e0e0e0;
+    display: flex;
+    justify-content: center;
+    padding-top: 40px;
+  }
+
+  .browser-window {
+    width: 90%;
+    max-width: 900px;
+    border: 2px solid #333;
+    border-radius: 10px;
+    background: #111;
+    overflow: hidden;
+  }
+
+  .browser-tabs {
+    display: flex;
+    background: #222;
+    border-bottom: 2px solid #333;
+  }
+
+  .tab {
+    padding: 10px 20px;
+    cursor: pointer;
+    background: #222;
+    color: #aaa;
+    border-right: 1px solid #333;
+    transition: 0.2s;
+    font-weight: bold;
+  }
+
+  .tab.active {
+    background: #0a0a0a;
+    color: #caa6ff;
+  }
+
+  .tab:hover {
+    background: #1a1a1a;
+  }
+
+  .button-field {
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 12px;
+  }
+
+  .button-field button {
+    padding: 12px;
+    border: 2px solid #333;
+    border-radius: 6px;
+    background: #111;
+    color: #caa6ff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  .button-field button:hover {
+    border-color: #caa6ff;
+    background: #222;
+  }
+</style>
+</head>
+<body>
+
+<div class="browser-window">
+  <div class="browser-tabs">
+    <div class="tab active" data-tab="1">Coin</div>
+    <div class="tab" data-tab="2">Updates</div>
+    <div class="tab" data-tab="3">Thoughts</div>
+    <div class="tab" data-tab="4">Tab 4</div>
+    <div class="tab" data-tab="5">Tab 5</div>
+  </div>
+
+  <div class="button-field" id="buttonField">
+    <!-- Buttons for the current tab will render here -->
+  </div>
+</div>
+
+<script>
+  // Define buttons for each tab
+  const tabButtons = {
+    1: ["Button 1", "Button 2", "Button 3", "Button 4", "Button 5"],
+    2: ["Button A", "Button B", "Button C", "Button D", "Button E"],
+    3: ["One", "Two", "Three", "Four", "Five"],
+    4: ["Alpha", "Beta", "Gamma", "Delta", "Epsilon"],
+    5: ["Red", "Green", "Blue", "Yellow", "Purple"]
+  };
+
+  const buttonField = document.getElementById('buttonField');
+  const tabs = document.querySelectorAll('.tab');
+
+  function renderButtons(tabNumber) {
+    buttonField.innerHTML = '';
+    const buttons = tabButtons[tabNumber] || [];
+    buttons.forEach((label, index) => {
+      const btn = document.createElement('button');
+      btn.textContent = `${index+1}. ${label}`;
+      buttonField.appendChild(btn);
+    });
+  }
+
+  // Initialize first tab
+  renderButtons(1);
+
+  // Tab click
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      renderButtons(tab.getAttribute('data-tab'));
+    });
+  });
+</script>
+
+</body>
+</html>
