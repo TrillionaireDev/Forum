@@ -85,7 +85,6 @@
   }
 
   .tab:last-child { border-right: none; }
-
   .tab.active { background: #0a0a0a; color: #caa6ff; }
   .tab:hover { background: #1a1a1a; }
 
@@ -98,9 +97,7 @@
     gap: 12px;
     flex-grow: 1;
     overflow-y: auto;
-
-    /* Keep size stable even when empty */
-    min-height: 180px; /* adjust to match default message height */
+    min-height: 180px; /* keeps size stable */
   }
 
   .button-field button {
@@ -133,6 +130,13 @@
     word-wrap: break-word;
     font-size: 1rem;
   }
+
+  /* iframe styling */
+  .button-field iframe {
+    width: 100%;
+    height: 180px; /* same as min-height for consistency */
+    border: none;
+  }
 </style>
 </head>
 <body>
@@ -146,10 +150,10 @@
 
   <!-- Browser tabs -->
   <div class="browser-tabs">
-    <div class="tab" data-tab="1">Coin</div>
-    <div class="tab" data-tab="2">Updates</div>
-    <div class="tab" data-tab="3">Thoughts</div>
-    <div class="tab" data-tab="4">Bots</div>
+    <div class="tab" data-file="">Coin</div>
+    <div class="tab" data-file="">Updates</div>
+    <div class="tab" data-file="thoughts.html">Thoughts</div>
+    <div class="tab" data-file="">Bots</div>
   </div>
 
   <!-- Button field -->
@@ -172,15 +176,25 @@ function renderDefaultMessage() {
 
 renderDefaultMessage(); // show default message on page load
 
-// Tabs click behavior (blank content for now, size stays same)
+// Tabs click behavior
 tabs.forEach(tab => {
   tab.addEventListener('click', () => {
     tabs.forEach(t => t.classList.remove('active'));
     tab.classList.add('active');
 
-    // Keep the field height stable even when empty
-    buttonField.innerHTML = '';
-    buttonField.style.minHeight = '180px'; // same as CSS
+    const file = tab.getAttribute('data-file');
+
+    if(file) {
+      // Load iframe for Thoughts tab
+      buttonField.innerHTML = '';
+      const iframe = document.createElement('iframe');
+      iframe.src = file;
+      buttonField.appendChild(iframe);
+    } else {
+      // Other tabs blank but keep size
+      buttonField.innerHTML = '';
+      buttonField.style.minHeight = '180px';
+    }
   });
 });
 
