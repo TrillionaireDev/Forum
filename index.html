@@ -5,15 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DFI Forum Browser</title>
 <style>
-  body {
+  html, body {
     margin: 0;
     padding: 0;
+    height: 100%;
     font-family: system-ui, sans-serif;
     background: #0a0a0a;
     color: #e0e0e0;
     display: flex;
     justify-content: center;
-    padding-top: 40px;
+    align-items: center; /* vertically center */
   }
 
   .browser-window {
@@ -168,7 +169,7 @@
     });
   }
 
-  // Tabs are inactive at first; no active class
+  // Tabs are inactive at first; page starts with search field
   tabs.forEach(tab => {
     tab.addEventListener('click', () => {
       tabs.forEach(t => t.classList.remove('active'));
@@ -181,8 +182,6 @@
   dateBtn.addEventListener('click', () => {
     alert("Date button clicked. Can implement sorting later.");
   });
-
-  // Page starts in search field, button field empty
 </script>
 
 </body>
