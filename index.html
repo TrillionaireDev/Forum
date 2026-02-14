@@ -98,6 +98,9 @@
     gap: 12px;
     flex-grow: 1;
     overflow-y: auto;
+
+    /* Keep size stable even when empty */
+    min-height: 180px; /* adjust to match default message height */
   }
 
   .button-field button {
@@ -124,7 +127,7 @@
     justify-content: center;
     text-align: center;
     padding: 20px;
-    min-height: 140px; /* ensures default message fills the box */
+    min-height: 140px;
     line-height: 1.4;
     white-space: normal;
     word-wrap: break-word;
@@ -169,13 +172,15 @@ function renderDefaultMessage() {
 
 renderDefaultMessage(); // show default message on page load
 
-// Tabs click behavior (blank content for now)
+// Tabs click behavior (blank content for now, size stays same)
 tabs.forEach(tab => {
   tab.addEventListener('click', () => {
     tabs.forEach(t => t.classList.remove('active'));
     tab.classList.add('active');
-    // Clear the button field to show blank when a tab is clicked
+
+    // Keep the field height stable even when empty
     buttonField.innerHTML = '';
+    buttonField.style.minHeight = '180px'; // same as CSS
   });
 });
 
