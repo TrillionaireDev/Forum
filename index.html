@@ -32,13 +32,15 @@
   }
 
   .tab {
-    padding: 10px 20px;
+    flex: 1;
+    padding: 10px 0;
     cursor: pointer;
     background: #222;
     color: #aaa;
     border-right: 1px solid #333;
     transition: 0.2s;
     font-weight: bold;
+    text-align: center; /* Center tab titles */
   }
 
   .tab.active {
@@ -81,7 +83,7 @@
     <div class="tab active" data-tab="1">Coin</div>
     <div class="tab" data-tab="2">Updates</div>
     <div class="tab" data-tab="3">Thoughts</div>
-    <div class="tab" data-tab="4">Tab 4</div>
+    <div class="tab" data-tab="4">Bots</div>
     <div class="tab" data-tab="5">Tab 5</div>
   </div>
 
@@ -96,7 +98,7 @@
     1: ["Button 1", "Button 2", "Button 3", "Button 4", "Button 5"],
     2: ["Button A", "Button B", "Button C", "Button D", "Button E"],
     3: ["One", "Two", "Three", "Four", "Five"],
-    4: ["Alpha", "Beta", "Gamma", "Delta", "Epsilon"],
+    4: ["Bot Alpha", "Bot Beta", "Bot Gamma", "Bot Delta", "Bot Epsilon"],
     5: ["Red", "Green", "Blue", "Yellow", "Purple"]
   };
 
