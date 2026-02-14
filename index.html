@@ -84,18 +84,10 @@
     text-align: center;
   }
 
-  .tab:last-child {
-    border-right: none;
-  }
+  .tab:last-child { border-right: none; }
 
-  .tab.active {
-    background: #0a0a0a;
-    color: #caa6ff;
-  }
-
-  .tab:hover {
-    background: #1a1a1a;
-  }
+  .tab.active { background: #0a0a0a; color: #caa6ff; }
+  .tab:hover { background: #1a1a1a; }
 
   /* Button field */
   .button-field {
@@ -125,7 +117,6 @@
     background: #222;
   }
 
-  /* Full-width button (default message & first tab button) */
   .button-field button.full-width {
     grid-column: 1 / -1;
     display: flex;
@@ -133,7 +124,7 @@
     justify-content: center;
     text-align: center;
     padding: 20px;
-    min-height: 140px; /* ensures first button matches default message */
+    min-height: 140px; /* ensures default message fills the box */
     line-height: 1.4;
     white-space: normal;
     word-wrap: break-word;
@@ -163,56 +154,35 @@
 </div>
 
 <script>
-  const tabButtons = {
-    1: ["Main Coin Info", "Button 2", "Button 3", "Button 4", "Button 5"],
-    2: ["Latest Update", "Button B", "Button C", "Button D", "Button E"],
-    3: ["Thought Highlight", "Two", "Three", "Four", "Five"],
-    4: ["Primary Bot", "Bot Beta", "Bot Gamma", "Bot Delta", "Bot Epsilon"]
-  };
+const buttonField = document.getElementById('buttonField');
+const tabs = document.querySelectorAll('.tab');
+const dateBtn = document.getElementById('dateBtn');
 
-  const buttonField = document.getElementById('buttonField');
-  const tabs = document.querySelectorAll('.tab');
-  const dateBtn = document.getElementById('dateBtn');
+// Default start message
+function renderDefaultMessage() {
+  buttonField.innerHTML = '';
+  const btn = document.createElement('button');
+  btn.textContent = "This forum is the official source of information about DrugFreeInu. Select a topic to explore the ideas and beliefs of DrugFreeInu’s developer.";
+  btn.classList.add('full-width');
+  buttonField.appendChild(btn);
+}
 
-  // Default start message
-  function renderDefaultMessage() {
+renderDefaultMessage(); // show default message on page load
+
+// Tabs click behavior (blank content for now)
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    tabs.forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    // Clear the button field to show blank when a tab is clicked
     buttonField.innerHTML = '';
-    const btn = document.createElement('button');
-    btn.textContent = "This forum is the official source of information about DrugFreeInu. Select a topic to explore the ideas and beliefs of DrugFreeInu’s developer.";
-    btn.classList.add('full-width');
-    buttonField.appendChild(btn);
-  }
-
-  renderDefaultMessage(); // show default message on page load
-
-  // Tabs click behavior
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      tabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      const tabNumber = tab.getAttribute('data-tab');
-      renderButtons(tabNumber);
-    });
   });
+});
 
-  // Render buttons for a tab
-  function renderButtons(tabNumber) {
-    buttonField.innerHTML = '';
-    const buttons = tabButtons[tabNumber] || [];
-    buttons.forEach((label, index) => {
-      const btn = document.createElement('button');
-      btn.textContent = `${index+1}. ${label}`;
-      // First button in tab gets full-width styling to match default
-      if (index === 0) btn.classList.add('full-width');
-      buttonField.appendChild(btn);
-    });
-  }
-
-  // Date button placeholder
-  dateBtn.addEventListener('click', () => {
-    alert("Date button clicked.");
-  });
-
+// Date button placeholder
+dateBtn.addEventListener('click', () => {
+  alert("Date button clicked.");
+});
 </script>
 
 </body>
