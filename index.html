@@ -25,26 +25,40 @@
     overflow: hidden;
   }
 
-  /* Big forum header button */
-  .forum-header {
-    width: 100%;
-    padding: 20px;
-    text-align: center;
+  /* Search field container */
+  .search-container {
+    display: flex;
+    padding: 15px 20px;
     background: #222;
     border-bottom: 2px solid #333;
-    font-weight: bold;
-    font-size: 1.5rem;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .search-container input[type="text"] {
+    flex: 1;
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 2px solid #333;
+    background: #111;
+    color: #e0e0e0;
+    font-size: 1rem;
+  }
+
+  .search-container button {
+    padding: 10px 15px;
+    border: 2px solid #333;
+    border-radius: 6px;
+    background: #111;
     color: #caa6ff;
+    font-weight: bold;
     cursor: pointer;
     transition: 0.2s;
   }
 
-  .forum-header.active {
-    background: #0a0a0a;
-  }
-
-  .forum-header:hover {
-    background: #1a1a1a;
+  .search-container button:hover {
+    border-color: #caa6ff;
+    background: #222;
   }
 
   /* Browser tabs */
@@ -79,7 +93,7 @@
     background: #1a1a1a;
   }
 
-  /* Button field */
+  /* Button field below tabs */
   .button-field {
     padding: 20px;
     display: grid;
@@ -111,12 +125,16 @@
 <body>
 
 <div class="browser-window">
-  <!-- Big forum header -->
-  <div class="forum-header active" data-tab="0">DrugFreeInu Forum</div>
+  <!-- Search field with Text and Date buttons -->
+  <div class="search-container">
+    <input type="text" placeholder="Search" id="searchInput">
+    <button id="textBtn">Text</button>
+    <button id="dateBtn">Date</button>
+  </div>
 
   <!-- Browser tabs -->
   <div class="browser-tabs">
-    <div class="tab" data-tab="1">Coin</div>
+    <div class="tab active" data-tab="1">Coin</div>
     <div class="tab" data-tab="2">Updates</div>
     <div class="tab" data-tab="3">Thoughts</div>
     <div class="tab" data-tab="4">Bots</div>
@@ -130,7 +148,6 @@
 
 <script>
   const tabButtons = {
-    0: ["Welcome Post"], // DrugFreeInu Forum main page
     1: ["Main Coin Info", "Button 2", "Button 3", "Button 4", "Button 5"],
     2: ["Latest Update", "Button B", "Button C", "Button D", "Button E"],
     3: ["Thought Highlight", "Two", "Three", "Four", "Five"],
@@ -139,7 +156,6 @@
 
   const buttonField = document.getElementById('buttonField');
   const tabs = document.querySelectorAll('.tab');
-  const forumHeader = document.querySelector('.forum-header');
 
   function renderButtons(tabNumber) {
     buttonField.innerHTML = '';
@@ -147,29 +163,33 @@
     buttons.forEach((label, index) => {
       const btn = document.createElement('button');
       btn.textContent = `${index+1}. ${label}`;
-      if (index === 0) btn.classList.add('full-width'); // first button spans full width
+      if (index === 0) btn.classList.add('full-width'); // first button full width
       buttonField.appendChild(btn);
     });
   }
 
-  // Initialize main page
-  renderButtons(0);
+  renderButtons(1); // initialize first tab
 
-  // Tab click
   tabs.forEach(tab => {
     tab.addEventListener('click', () => {
       tabs.forEach(t => t.classList.remove('active'));
-      forumHeader.classList.remove('active');
       tab.classList.add('active');
       renderButtons(tab.getAttribute('data-tab'));
     });
   });
 
-  // Forum header click
-  forumHeader.addEventListener('click', () => {
-    tabs.forEach(t => t.classList.remove('active'));
-    forumHeader.classList.add('active');
-    renderButtons(0);
+  // Search input & buttons (can hook later for filtering)
+  const searchInput = document.getElementById('searchInput');
+  const textBtn = document.getElementById('textBtn');
+  const dateBtn = document.getElementById('dateBtn');
+
+  // Example placeholders for click actions
+  textBtn.addEventListener('click', () => {
+    alert("Text filter clicked. Can implement filtering later.");
+  });
+
+  dateBtn.addEventListener('click', () => {
+    alert("Date filter clicked. Can implement sorting later.");
   });
 </script>
 
