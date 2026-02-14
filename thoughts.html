@@ -1,2 +1,11 @@
 <!-- thoughts.html -->
-<button class="full-width">Why I made a forum</button>
+<button class="full-width" onclick="showPost()">Why I made a forum</button>
+
+<script>
+function showPost() {
+  // Send the title and date to the parent page
+  parent.document.getElementById('postDate').textContent = 'February 14, 2026';
+  parent.document.getElementById('postHeader').textContent = 'Why I made a forum';
+  parent.document.getElementById('postTitle').style.display = 'flex';
+}
+</script>
