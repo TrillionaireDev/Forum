@@ -29,6 +29,7 @@
     flex-direction: column;
   }
 
+  /* Search field container */
   .search-container {
     display: flex;
     padding: 15px 20px;
@@ -64,6 +65,7 @@
     background: #222;
   }
 
+  /* Browser tabs */
   .browser-tabs {
     display: flex;
     background: #222;
@@ -95,6 +97,7 @@
     background: #1a1a1a;
   }
 
+  /* Button field */
   .button-field {
     padding: 20px;
     display: grid;
@@ -122,8 +125,19 @@
     background: #222;
   }
 
+  /* Full-width button (default message & first tab button) */
   .button-field button.full-width {
     grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    height: 100%;
+    line-height: 1.4;
+    white-space: normal;
+    word-wrap: break-word;
+    font-size: 1rem;
   }
 </style>
 </head>
@@ -149,7 +163,6 @@
 </div>
 
 <script>
-  // Tab buttons content
   const tabButtons = {
     1: ["Main Coin Info", "Button 2", "Button 3", "Button 4", "Button 5"],
     2: ["Latest Update", "Button B", "Button C", "Button D", "Button E"],
@@ -161,11 +174,11 @@
   const tabs = document.querySelectorAll('.tab');
   const dateBtn = document.getElementById('dateBtn');
 
-  // Default start message in the search field
+  // Default start message
   function renderDefaultMessage() {
     buttonField.innerHTML = '';
     const btn = document.createElement('button');
-    btn.textContent = "This forum is the official source of information about DrugFreeInu. Select a topic to explore the mind of the DrugFreeInu’s developer.";
+    btn.textContent = "This forum is the official source of information about DrugFreeInu. Select a topic to explore the ideas and beliefs of DrugFreeInu’s developer.";
     btn.classList.add('full-width');
     buttonField.appendChild(btn);
   }
