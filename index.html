@@ -110,6 +110,18 @@ html, body {
   color: #f2f2f2;
 }
 
+/* Clickable post preview */
+.post-preview {
+  cursor: pointer;
+}
+
+.post-title {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #f2f2f2;
+}
+
 /* STACK MENU STYLE */
 .stack {
   display: flex;
@@ -184,16 +196,10 @@ const dateBtn = document.getElementById('dateBtn');
 
 /* default content */
 function renderDefaultMessage() {
-  buttonField.innerHTML = '';
-}
-
-/* navigation */
-function show(type) {
-  if (type === 'dfi') {
-    buttonField.innerHTML = `
-      <div class="dfi-box">
-        <h1>What is DFI?</h1>
-
+  buttonField.innerHTML = `
+    <div class="dfi-box post-preview" onclick="toggleDFIPost()">
+      <p class="post-title">What is DFI?</p>
+      <div id="dfiPostContent" style="display:none; margin-top:15px;">
         <p>
           The question can be thought of as an opinion. It depends on who is being asked
           the question or how it’s interacted with.
@@ -216,9 +222,23 @@ function show(type) {
           Today is April 17, 2026. What DFI is today could have new meaning by tomorrow.
         </p>
       </div>
-    `;
-  }
+    </div>
+  `;
+}
 
+function toggleDFIPost() {
+  const content = document.getElementById('dfiPostContent');
+  if (!content) return;
+
+  if (content.style.display === 'none' || content.style.display === '') {
+    content.style.display = 'block';
+  } else {
+    content.style.display = 'none';
+  }
+}
+
+/* navigation */
+function show(type) {
   if (type === 'privacy') {
     buttonField.innerHTML = `
       <div class="dfi-box">
