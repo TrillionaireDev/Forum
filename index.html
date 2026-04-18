@@ -30,6 +30,7 @@ html, body {
   flex-direction: column;
 }
 
+/* search */
 .search-container {
   display: flex;
   padding: 15px 20px;
@@ -46,7 +47,6 @@ html, body {
   border: 2px solid #333;
   background: #111;
   color: #e0e0e0;
-  font-size: 1rem;
 }
 
 .search-container button {
@@ -57,14 +57,9 @@ html, body {
   color: #caa6ff;
   font-weight: bold;
   cursor: pointer;
-  transition: 0.2s;
 }
 
-.search-container button:hover {
-  border-color: #caa6ff;
-  background: #222;
-}
-
+/* content */
 .button-field {
   padding: 20px;
   display: flex;
@@ -74,16 +69,7 @@ html, body {
   overflow-y: auto;
 }
 
-.button-field button {
-  padding: 20px;
-  border: 2px solid #333;
-  border-radius: 8px;
-  background: #111;
-  color: #caa6ff;
-  font-weight: bold;
-  text-align: center;
-}
-
+/* DFI box */
 .dfi-box {
   border: 2px solid #333;
   border-radius: 10px;
@@ -92,101 +78,122 @@ html, body {
   line-height: 1.6;
 }
 
-.dfi-box h1 {
-  margin: 0 0 20px 0;
-  font-size: 2rem;
-  color: #f2f2f2;
+/* STACK MENU (your art part) */
+.stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 20px;
+  border-top: 2px solid #333;
 }
 
-.dfi-box p {
-  margin: 0 0 20px 0;
-  font-size: 1rem;
-  color: #e0e0e0;
+/* ONLY stack buttons get extrusion */
+.stack button {
+  background: #111;
+  border: none;
+  color: #777;
+  font-size: 12px;
+  padding: 6px 10px;
+  margin: 2px 0;
+  cursor: pointer;
+
+  box-shadow:
+    -1px -1px 0 #444,
+    -2px -2px 0 #3a3a3a,
+    -3px -3px 0 #333,
+    -4px -4px 0 #2a2a2a,
+    -5px -5px 0 #222,
+    -6px -6px 0 #1a1a1a,
+    -7px -7px 0 #111;
 }
 
-.dfi-box .section-title {
-  margin-bottom: 12px;
-  font-weight: 700;
-  color: #f2f2f2;
+/* hover */
+.stack button:hover {
+  color: #fff;
+  box-shadow:
+    -1px -1px 0 #666,
+    -2px -2px 0 #555,
+    -3px -3px 0 #444,
+    -4px -4px 0 #333,
+    -5px -5px 0 #222,
+    -6px -6px 0 #1a1a1a,
+    -7px -7px 0 #111;
 }
 
-.dfi-box ul {
-  margin: 0 0 28px 0;
-  padding-left: 28px;
-}
-
-.dfi-box li {
-  margin: 6px 0;
-  font-size: 1rem;
-  color: #e0e0e0;
-}
-
-.dfi-box .footer-text {
-  margin-top: 10px;
-  font-size: 1rem;
-  color: #f2f2f2;
+/* press */
+.stack button:active {
+  box-shadow:
+    -1px -1px 0 #333,
+    -2px -2px 0 #222,
+    -3px -3px 0 #111;
 }
 </style>
 </head>
+
 <body>
 
 <div class="browser-window">
 
   <!-- Search -->
   <div class="search-container">
-    <input type="text" placeholder="Search" id="searchInput">
+    <input type="text" placeholder="Search">
     <button id="dateBtn">Date</button>
   </div>
 
-  <!-- Content Area -->
+  <!-- Content -->
   <div class="button-field" id="buttonField"></div>
+
+  <!-- STACK MENU (ADDED HERE) -->
+  <div class="stack">
+    <button onclick="show('form')">form</button>
+    <button onclick="show('forum')">forum</button>
+    <button onclick="show('privacy')">privacy</button>
+    <button onclick="show('formula')">.formula</button>
+  </div>
 
 </div>
 
 <script>
 const buttonField = document.getElementById('buttonField');
-const dateBtn = document.getElementById('dateBtn');
 
 function renderDefaultMessage() {
-  buttonField.innerHTML = '';
-
-  const box = document.createElement('div');
-  box.className = 'dfi-box';
-
-  box.innerHTML = `
-    <h1>What is DFI?</h1>
-
-    <p>
-      The question can be thought of as an opinion. It depends on who is being asked
-      the question or how it’s interacted with.
-    </p>
-
-    <p class="section-title">Could be seen as:</p>
-
-    <ul>
-      <li>nothing</li>
-      <li>a tool</li>
-      <li>a way of life</li>
-      <li>a meme</li>
-      <li>a reminder</li>
-      <li>inspiration</li>
-      <li>a learning opportunity</li>
-      <li>art</li>
-    </ul>
-
-    <p class="footer-text">
-      Today is April 17, 2026. What DFI is today could have new meaning by tomorrow.
-    </p>
+  buttonField.innerHTML = `
+    <div class="dfi-box">
+      <h1>What is DFI?</h1>
+      <p>The question can be thought of as an opinion.</p>
+    </div>
   `;
+}
 
-  buttonField.appendChild(box);
+function show(type) {
+  if (type === 'privacy') {
+    buttonField.innerHTML = `
+      <div class="dfi-box">
+        The form submission on drugfreeinu.forum does not send, store, or record data.
+      </div>
+    `;
+  }
+
+  if (type === 'formula') {
+    buttonField.innerHTML = `
+      <div class="dfi-box">
+        <strong>art + thought = theory</strong>
+      </div>
+    `;
+  }
+
+  if (type === 'forum') {
+    renderDefaultMessage();
+  }
+
+  if (type === 'form') {
+    buttonField.innerHTML = `
+      <div class="dfi-box">Form goes here</div>
+    `;
+  }
 }
 
 renderDefaultMessage();
-
-dateBtn.addEventListener('click', () => {
-  alert("Date button clicked.");
-});
 </script>
 
 </body>
