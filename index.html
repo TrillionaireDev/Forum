@@ -144,6 +144,20 @@ html, body {
   position: absolute;
   will-change: transform;
   max-width: 360px;
+  transition: transform 0.35s ease, opacity 0.3s ease;
+}
+
+.floating-post.expanded {
+  z-index: 50;
+}
+
+.floating-post.expanded .dfi-box {
+  transform: scale(1.05, 1.2);
+  transition: transform 0.35s ease;
+}
+
+.post-dim {
+  opacity: 0.2;
 }
 
 /* Bottom area */
@@ -166,7 +180,7 @@ html, body {
   flex-shrink: 0;
 }
 
-/* new layered menu items */
+/* layered menu items */
 .stack-item {
   position: relative;
   display: inline-block;
@@ -185,10 +199,7 @@ html, body {
   cursor: pointer;
 }
 
-.stack-item button:hover {
-  color: #fff;
-}
-
+.stack-item button:hover,
 .stack-item.active button {
   color: #fff;
 }
@@ -208,23 +219,9 @@ html, body {
 .l6 { --x:-6px; --y:-6px; transform: translate(var(--x), var(--y)); background:#1a1a1a; }
 .l7 { --x:-7px; --y:-7px; transform: translate(var(--x), var(--y)); background:#111; }
 
-@keyframes wave {
-  0%   { transform: translate(var(--x), var(--y)); }
-  50%  { transform: translate(var(--x), calc(var(--y) - 2px)); }
-  100% { transform: translate(var(--x), var(--y)); }
+.stack-item:active {
+  transform: translate(1px, 1px);
 }
-
-.stack-item.active .layer {
-  animation: wave 0.7s ease-in-out;
-}
-
-.stack-item.active .l1 { animation-delay: 0s; }
-.stack-item.active .l2 { animation-delay: 0.05s; }
-.stack-item.active .l3 { animation-delay: 0.1s; }
-.stack-item.active .l4 { animation-delay: 0.15s; }
-.stack-item.active .l5 { animation-delay: 0.2s; }
-.stack-item.active .l6 { animation-delay: 0.25s; }
-.stack-item.active .l7 { animation-delay: 0.3s; }
 
 /* right-side panel */
 .side-info {
@@ -308,14 +305,8 @@ const dateBtn = document.getElementById('dateBtn');
 
 function setActiveButton(type) {
   document.querySelectorAll('.stack-item').forEach(item => {
-    item.classList.remove('active');
+    item.classList.toggle('active', item.dataset.type === type);
   });
-
-  const active = document.querySelector(`.stack-item[data-type="${type}"]`);
-  if (active) {
-    void active.offsetWidth;
-    active.classList.add('active');
-  }
 }
 
 function togglePost(id) {
@@ -337,8 +328,8 @@ function renderDefaultMessage() {
   .then(([what, when]) => {
     buttonField.innerHTML = `
       <div class="post-row" id="postField">
-        <div class="floating-post" id="post1">${what}</div>
-        <div class="floating-post" id="post2">${when}</div>
+        <div class="floating-post" id="post1" onclick="expandPost(this)">${what}</div>
+        <div class="floating-post" id="post2" onclick="expandPost(this)">${when}</div>
       </div>
     `;
 
