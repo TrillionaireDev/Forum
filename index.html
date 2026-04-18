@@ -19,9 +19,9 @@ html, body {
 }
 
 .browser-window {
-  width: 90%;
-  max-width: 900px;
-  height: 500px;
+  width: 95%;
+  max-width: 1200px;
+  height: 520px;
   border: 2px solid #333;
   border-radius: 10px;
   background: #111;
@@ -314,8 +314,12 @@ function show(type) {
   }
 
   if (type === 'forum') {
-    sideInfo.innerHTML = '';
     renderDefaultMessage();
+    sideInfo.innerHTML = `
+      <p>
+        Information and beliefs from the artist’s mind behind DFI.
+      </p>
+    `;
     return;
   }
 }
