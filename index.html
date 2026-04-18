@@ -19,9 +19,10 @@ html, body {
 }
 
 .browser-window {
-  width: 95%;
-  max-width: 1200px;
-  height: 520px;
+  width: 96vw;
+  height: 92vh;
+  max-width: 1400px;
+  max-height: 1000px;
   border: 2px solid #333;
   border-radius: 10px;
   background: #111;
@@ -115,6 +116,11 @@ html, body {
 /* Clickable post preview */
 .post-preview {
   cursor: pointer;
+  display: inline-block;
+  width: auto;
+  min-width: 260px;
+  max-width: 420px;
+  padding: 18px 22px;
 }
 
 .post-title {
@@ -183,6 +189,18 @@ html, body {
     -3px -3px 0 #111;
 }
 
+.stack button.active {
+  color: #fff;
+  box-shadow:
+    -1px -1px 0 #777,
+    -2px -2px 0 #666,
+    -3px -3px 0 #555,
+    -4px -4px 0 #444,
+    -5px -5px 0 #333,
+    -6px -6px 0 #222,
+    -7px -7px 0 #111;
+}
+
 /* right-side panel */
 .side-info {
   flex: 1;
@@ -204,6 +222,25 @@ html, body {
   font-size: 0.95rem;
   color: #f2f2f2;
 }
+
+/* phone */
+@media (max-width: 700px) {
+  .browser-window {
+    width: 98vw;
+    height: 95vh;
+  }
+
+  #menuMount {
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .post-preview {
+    min-width: 220px;
+    max-width: 320px;
+    padding: 14px 18px;
+  }
+}
 </style>
 </head>
 
@@ -223,10 +260,10 @@ html, body {
   <!-- Bottom area -->
   <div id="menuMount">
     <div class="stack">
-      <button onclick="show('form')">form</button>
-      <button onclick="show('forum')">forum</button>
-      <button onclick="show('privacy')">privacy</button>
-      <button onclick="show('formula')">.formula</button>
+      <button data-type="form" onclick="show('form')">form</button>
+      <button data-type="forum" onclick="show('forum')">forum</button>
+      <button data-type="privacy" onclick="show('privacy')">privacy</button>
+      <button data-type="formula" onclick="show('formula')">.formula</button>
     </div>
 
     <div class="side-info" id="sideInfo"></div>
@@ -238,6 +275,12 @@ html, body {
 const buttonField = document.getElementById('buttonField');
 const sideInfo = document.getElementById('sideInfo');
 const dateBtn = document.getElementById('dateBtn');
+
+function setActiveButton(type) {
+  document.querySelectorAll('.stack button').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.type === type);
+  });
+}
 
 /* default content */
 function renderDefaultMessage() {
@@ -284,6 +327,8 @@ function toggleDFIPost() {
 
 /* navigation */
 function show(type) {
+  setActiveButton(type);
+
   if (type === 'form') {
     sideInfo.innerHTML = `
       <p>
@@ -328,7 +373,8 @@ dateBtn.addEventListener('click', () => {
   alert("Date button clicked.");
 });
 
-renderDefaultMessage();
+/* start on forum */
+show('forum');
 </script>
 
 </body>
