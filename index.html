@@ -204,12 +204,12 @@ html, body {
 
 @keyframes wave {
   0%   { transform: translate(var(--x), var(--y)); }
-  50%  { transform: translate(var(--x), calc(var(--y) - 3px)); }
+  50%  { transform: translate(var(--x), calc(var(--y) - 2px)); }
   100% { transform: translate(var(--x), var(--y)); }
 }
 
 .stack-item.active .layer {
-  animation: wave 0.6s ease-in-out infinite;
+  animation: wave 0.7s ease-in-out;
 }
 
 .stack-item.active .l1 { animation-delay: 0s; }
@@ -301,8 +301,14 @@ const dateBtn = document.getElementById('dateBtn');
 
 function setActiveButton(type) {
   document.querySelectorAll('.stack-item').forEach(item => {
-    item.classList.toggle('active', item.dataset.type === type);
+    item.classList.remove('active');
   });
+
+  const active = document.querySelector(`.stack-item[data-type="${type}"]`);
+  if (active) {
+    void active.offsetWidth;
+    active.classList.add('active');
+  }
 }
 
 function togglePost(id) {
@@ -399,6 +405,7 @@ fetch('menu.html')
   .catch(() => {
     document.getElementById('menuButtons').innerHTML = `
       <div class="stack">
+
         <div class="stack-item" data-type="form" onclick="show('form')">
           <div class="layer l7"></div><div class="layer l6"></div><div class="layer l5"></div>
           <div class="layer l4"></div><div class="layer l3"></div><div class="layer l2"></div><div class="layer l1"></div>
@@ -422,6 +429,7 @@ fetch('menu.html')
           <div class="layer l4"></div><div class="layer l3"></div><div class="layer l2"></div><div class="layer l1"></div>
           <button type="button">.formula</button>
         </div>
+
       </div>
     `;
     show('forum');
