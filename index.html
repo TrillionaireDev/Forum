@@ -285,32 +285,26 @@ html, body {
 
 <div class="browser-window">
 
-  <!-- Search -->
   <div class="search-container">
     <input type="text" placeholder="Search">
     <button id="dateBtn">Date</button>
   </div>
 
-  <!-- Main content -->
   <div class="button-field" id="buttonField"></div>
 
-  <!-- Bottom area -->
   <div id="menuMount">
-    <!-- menu.html loads here -->
     <div id="menuButtons"></div>
-
     <div class="side-info" id="sideInfo"></div>
   </div>
 
 </div>
 
+<script src="floatingPosts.js"></script>
+
 <script>
 const buttonField = document.getElementById('buttonField');
 const sideInfo = document.getElementById('sideInfo');
 const dateBtn = document.getElementById('dateBtn');
-
-let floatAnimationId = null;
-let floatingItems = [];
 
 function setActiveButton(type) {
   document.querySelectorAll('.stack-item').forEach(item => {
@@ -333,79 +327,6 @@ function togglePost(id) {
     : 'none';
 }
 
-function stopFloatingPosts() {
-  if (floatAnimationId) {
-    cancelAnimationFrame(floatAnimationId);
-    floatAnimationId = null;
-  }
-  floatingItems = [];
-}
-
-function startFloatingPosts() {
-  stopFloatingPosts();
-
-  const field = document.getElementById('postField');
-  if (!field) return;
-
-  const posts = [...field.querySelectorAll('.floating-post')];
-  if (!posts.length) return;
-
-  const width = field.clientWidth;
-  const height = field.clientHeight;
-
-  floatingItems = posts.map((el, i) => {
-    const w = el.offsetWidth;
-    const h = el.offsetHeight;
-
-    let x = i === 0 ? 40 : Math.max(80, width - w - 80);
-    let y = i === 0 ? 40 : Math.max(80, height - h - 80);
-
-    return {
-      el,
-      x,
-      y,
-      w,
-      h,
-      vx: (Math.random() * 0.08 + 0.03) * (Math.random() > 0.5 ? 1 : -1),
-      vy: (Math.random() * 0.06 + 0.02) * (Math.random() > 0.5 ? 1 : -1)
-    };
-  });
-
-  function animate() {
-    const maxW = field.clientWidth;
-    const maxH = field.clientHeight;
-
-    for (const item of floatingItems) {
-      item.x += item.vx;
-      item.y += item.vy;
-
-      if (item.x <= 0) {
-        item.x = 0;
-        item.vx *= -1;
-      }
-      if (item.x + item.w >= maxW) {
-        item.x = maxW - item.w;
-        item.vx *= -1;
-      }
-      if (item.y <= 0) {
-        item.y = 0;
-        item.vy *= -1;
-      }
-      if (item.y + item.h >= maxH) {
-        item.y = maxH - item.h;
-        item.vy *= -1;
-      }
-
-      item.el.style.transform = `translate(${item.x}px, ${item.y}px)`;
-    }
-
-    floatAnimationId = requestAnimationFrame(animate);
-  }
-
-  animate();
-}
-
-/* default forum content from separate files */
 function renderDefaultMessage() {
   stopFloatingPosts();
 
@@ -434,7 +355,6 @@ function renderDefaultMessage() {
   });
 }
 
-/* navigation */
 function show(type) {
   setActiveButton(type);
 
@@ -490,7 +410,6 @@ dateBtn.addEventListener('click', () => {
   alert("Date button clicked.");
 });
 
-/* load menu */
 fetch('menu.html')
   .then(res => res.text())
   .then(html => {
