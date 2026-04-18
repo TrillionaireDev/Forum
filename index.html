@@ -136,7 +136,7 @@ html, body {
 #menuMount {
   display: flex;
   align-items: flex-start;
-  gap: 24px;
+  gap: 28px;
   padding: 20px;
   border-top: 2px solid #333;
   flex-shrink: 0;
@@ -157,9 +157,9 @@ html, body {
   background: #111;
   border: none;
   color: #777;
-  font-size: 12px;
-  padding: 6px 10px;
-  margin: 2px 0;
+  font-size: 14px;
+  padding: 9px 16px;
+  margin: 4px 0;
   cursor: pointer;
 
   box-shadow:
@@ -209,19 +209,28 @@ html, body {
   min-width: 0;
   max-width: 100%;
   min-height: 120px;
-  padding-top: 4px;
+  padding-top: 8px;
+  padding-left: 12px;
+  padding-right: 12px;
   overflow-y: auto;
+  display: flex;
+  justify-content: center;
+}
+
+.side-info-inner {
+  width: 100%;
+  max-width: 540px;
 }
 
 .side-info p {
-  margin: 0 0 12px 0;
-  font-size: 0.86rem;
-  line-height: 1.45;
+  margin: 0 0 14px 0;
+  font-size: 0.92rem;
+  line-height: 1.5;
   color: #d0d0d0;
 }
 
 .side-info strong {
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: #f2f2f2;
 }
 
@@ -233,8 +242,13 @@ html, body {
   }
 
   #menuMount {
-    gap: 16px;
+    gap: 18px;
     padding: 16px;
+  }
+
+  .stack button {
+    font-size: 13px;
+    padding: 8px 14px;
   }
 }
 </style>
@@ -327,25 +341,31 @@ function show(type) {
 
   if (type === 'form') {
     sideInfo.innerHTML = `
-      <pScreenshot or copy&paste the form to save it.</p>
+      <div class="side-info-inner">
+        <p>Screenshot or copy&amp;paste the form to save it.</p>
+      </div>
     `;
     return;
   }
 
   if (type === 'privacy') {
     sideInfo.innerHTML = `
-      <p>
-        The form submission on drugfreeinu.forum is built from code that doesn’t send, save, or record anything that is typed into the form.
-      </p>
-      <p>(select to view the code)</p>
+      <div class="side-info-inner">
+        <p>
+          The form submission on drugfreeinu.forum is built from code that doesn’t send, save, or record anything that is typed into the form.
+        </p>
+        <p>(select to view the code)</p>
+      </div>
     `;
     return;
   }
 
   if (type === 'formula') {
     sideInfo.innerHTML = `
-      <p>A calculation to see how the theories on .forum came from using the art of thought.</p>
-      <p><strong>art + thought = theory</strong></p>
+      <div class="side-info-inner">
+        <p>A calculation to see how the theories on .forum came from using the art of thought.</p>
+        <p><strong>art + thought = theory</strong></p>
+      </div>
     `;
     return;
   }
@@ -353,9 +373,11 @@ function show(type) {
   if (type === 'forum') {
     renderDefaultMessage();
     sideInfo.innerHTML = `
-      <p>
-        Information and beliefs from the artist’s mind behind DFI.
-      </p>
+      <div class="side-info-inner">
+        <p>
+          Information and beliefs from the artist’s mind behind DFI.
+        </p>
+      </div>
     `;
     return;
   }
