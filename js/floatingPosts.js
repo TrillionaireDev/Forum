@@ -32,8 +32,8 @@ function startFloatingPosts() {
       y: Math.random() * Math.max(0, height - h),
       w,
       h,
-      vx: (Math.random() * 0.04 + 0.015) * (Math.random() > 0.5 ? 1 : -1),
-      vy: (Math.random() * 0.03 + 0.01) * (Math.random() > 0.5 ? 1 : -1)
+      vx: (Math.random() * 0.025 + 0.01) * (Math.random() > 0.5 ? 1 : -1),
+      vy: (Math.random() * 0.02 + 0.008) * (Math.random() > 0.5 ? 1 : -1)
     };
   });
 
@@ -124,7 +124,7 @@ function closeExpandedPost() {
 
   setTimeout(() => {
     startFloatingPosts();
-  }, 400);
+  }, 650);
 }
 
 function resetPosts() {
