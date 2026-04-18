@@ -160,11 +160,10 @@ html, body {
   flex-shrink: 0;
 }
 
-/* new layered menu items */
 .stack-item {
   position: relative;
   display: inline-block;
-  margin: 6px 0;
+  margin: 10px 0;
   cursor: pointer;
 }
 
@@ -174,15 +173,14 @@ html, body {
   background: #111;
   border: none;
   color: #777;
-  font-size: 14px;
-  padding: 9px 16px;
+  font-size: 18px;
+  padding: 12px 22px;
   cursor: pointer;
+  min-width: 150px;
+  text-align: left;
 }
 
-.stack-item button:hover {
-  color: #fff;
-}
-
+.stack-item button:hover,
 .stack-item.active button {
   color: #fff;
 }
@@ -194,31 +192,17 @@ html, body {
   z-index: 1;
 }
 
-.l1 { --x:-1px; --y:-1px; transform: translate(var(--x), var(--y)); background:#444; }
-.l2 { --x:-2px; --y:-2px; transform: translate(var(--x), var(--y)); background:#3a3a3a; }
-.l3 { --x:-3px; --y:-3px; transform: translate(var(--x), var(--y)); background:#333; }
-.l4 { --x:-4px; --y:-4px; transform: translate(var(--x), var(--y)); background:#2a2a2a; }
-.l5 { --x:-5px; --y:-5px; transform: translate(var(--x), var(--y)); background:#222; }
-.l6 { --x:-6px; --y:-6px; transform: translate(var(--x), var(--y)); background:#1a1a1a; }
-.l7 { --x:-7px; --y:-7px; transform: translate(var(--x), var(--y)); background:#111; }
+.l1 { transform: translate(-2px, -2px); background:#3b3b3b; }
+.l2 { transform: translate(-4px, -4px); background:#323232; }
+.l3 { transform: translate(-6px, -6px); background:#2a2a2a; }
+.l4 { transform: translate(-8px, -8px); background:#222; }
+.l5 { transform: translate(-10px, -10px); background:#1b1b1b; }
+.l6 { transform: translate(-12px, -12px); background:#151515; }
+.l7 { transform: translate(-14px, -14px); background:#101010; }
 
-@keyframes wave {
-  0%   { transform: translate(var(--x), var(--y)); }
-  50%  { transform: translate(var(--x), calc(var(--y) - 2px)); }
-  100% { transform: translate(var(--x), var(--y)); }
+.stack-item:active {
+  transform: translate(1px, 1px);
 }
-
-.stack-item.active .layer {
-  animation: wave 0.7s ease-in-out;
-}
-
-.stack-item.active .l1 { animation-delay: 0s; }
-.stack-item.active .l2 { animation-delay: 0.05s; }
-.stack-item.active .l3 { animation-delay: 0.1s; }
-.stack-item.active .l4 { animation-delay: 0.15s; }
-.stack-item.active .l5 { animation-delay: 0.2s; }
-.stack-item.active .l6 { animation-delay: 0.25s; }
-.stack-item.active .l7 { animation-delay: 0.3s; }
 
 /* right-side panel */
 .side-info {
@@ -227,11 +211,12 @@ html, body {
   max-width: 100%;
   min-height: 120px;
   padding-top: 8px;
-  padding-left: 12px;
-  padding-right: 12px;
+  padding-left: 20px;
+  padding-right: 20px;
   overflow-y: auto;
   display: flex;
   justify-content: center;
+  background: linear-gradient(to right, rgba(0,0,0,0), rgba(0,0,0,0.28), rgba(0,0,0,0.55));
 }
 
 .side-info-inner {
@@ -264,8 +249,9 @@ html, body {
   }
 
   .stack-item button {
-    font-size: 13px;
-    padding: 8px 14px;
+    font-size: 15px;
+    padding: 10px 16px;
+    min-width: 130px;
   }
 }
 </style>
@@ -301,14 +287,8 @@ const dateBtn = document.getElementById('dateBtn');
 
 function setActiveButton(type) {
   document.querySelectorAll('.stack-item').forEach(item => {
-    item.classList.remove('active');
+    item.classList.toggle('active', item.dataset.type === type);
   });
-
-  const active = document.querySelector(`.stack-item[data-type="${type}"]`);
-  if (active) {
-    void active.offsetWidth;
-    active.classList.add('active');
-  }
 }
 
 function togglePost(id) {
