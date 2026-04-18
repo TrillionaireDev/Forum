@@ -30,7 +30,7 @@ html, body {
   flex-direction: column;
 }
 
-/* search */
+/* Search */
 .search-container {
   display: flex;
   padding: 15px 20px;
@@ -40,7 +40,7 @@ html, body {
   gap: 10px;
 }
 
-.search-container input[type="text"] {
+.search-container input {
   flex: 1;
   padding: 10px 12px;
   border-radius: 6px;
@@ -59,17 +59,14 @@ html, body {
   cursor: pointer;
 }
 
-/* content */
+/* Content */
 .button-field {
   padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
   flex-grow: 1;
   overflow-y: auto;
 }
 
-/* DFI box */
+/* DFI Box */
 .dfi-box {
   border: 2px solid #333;
   border-radius: 10px;
@@ -78,7 +75,7 @@ html, body {
   line-height: 1.6;
 }
 
-/* STACK MENU (your art part) */
+/* STACK MENU STYLE */
 .stack {
   display: flex;
   flex-direction: column;
@@ -107,7 +104,6 @@ html, body {
     -7px -7px 0 #111;
 }
 
-/* hover */
 .stack button:hover {
   color: #fff;
   box-shadow:
@@ -120,7 +116,6 @@ html, body {
     -7px -7px 0 #111;
 }
 
-/* press */
 .stack button:active {
   box-shadow:
     -1px -1px 0 #333,
@@ -143,19 +138,15 @@ html, body {
   <!-- Content -->
   <div class="button-field" id="buttonField"></div>
 
-  <!-- STACK MENU (ADDED HERE) -->
-  <div class="stack">
-    <button onclick="show('form')">form</button>
-    <button onclick="show('forum')">forum</button>
-    <button onclick="show('privacy')">privacy</button>
-    <button onclick="show('formula')">.formula</button>
-  </div>
+  <!-- MENU LOADS HERE -->
+  <div id="menuMount"></div>
 
 </div>
 
 <script>
 const buttonField = document.getElementById('buttonField');
 
+/* default content */
 function renderDefaultMessage() {
   buttonField.innerHTML = `
     <div class="dfi-box">
@@ -165,6 +156,7 @@ function renderDefaultMessage() {
   `;
 }
 
+/* navigation */
 function show(type) {
   if (type === 'privacy') {
     buttonField.innerHTML = `
@@ -192,6 +184,13 @@ function show(type) {
     `;
   }
 }
+
+/* LOAD menu.html */
+fetch('menu.html')
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById('menuMount').innerHTML = data;
+  });
 
 renderDefaultMessage();
 </script>
