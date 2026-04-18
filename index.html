@@ -83,6 +83,49 @@ html, body {
   font-weight: bold;
   text-align: center;
 }
+
+.dfi-box {
+  border: 2px solid #333;
+  border-radius: 10px;
+  padding: 25px;
+  background: #111;
+  line-height: 1.6;
+}
+
+.dfi-box h1 {
+  margin: 0 0 20px 0;
+  font-size: 2rem;
+  color: #f2f2f2;
+}
+
+.dfi-box p {
+  margin: 0 0 20px 0;
+  font-size: 1rem;
+  color: #e0e0e0;
+}
+
+.dfi-box .section-title {
+  margin-bottom: 12px;
+  font-weight: 700;
+  color: #f2f2f2;
+}
+
+.dfi-box ul {
+  margin: 0 0 28px 0;
+  padding-left: 28px;
+}
+
+.dfi-box li {
+  margin: 6px 0;
+  font-size: 1rem;
+  color: #e0e0e0;
+}
+
+.dfi-box .footer-text {
+  margin-top: 10px;
+  font-size: 1rem;
+  color: #f2f2f2;
+}
 </style>
 </head>
 <body>
@@ -107,11 +150,36 @@ const dateBtn = document.getElementById('dateBtn');
 function renderDefaultMessage() {
   buttonField.innerHTML = '';
 
-  const btn = document.createElement('button');
-  btn.textContent =
-    "This forum is the official source of information about DrugFreeInu. Select a topic to explore the ideas and beliefs of DrugFreeInu’s developer.";
+  const box = document.createElement('div');
+  box.className = 'dfi-box';
 
-  buttonField.appendChild(btn);
+  box.innerHTML = `
+    <h1>What is DFI?</h1>
+
+    <p>
+      The question can be thought of as an opinion. It depends on who is being asked
+      the question or how it’s interacted with.
+    </p>
+
+    <p class="section-title">Could be seen as:</p>
+
+    <ul>
+      <li>nothing</li>
+      <li>a tool</li>
+      <li>a way of life</li>
+      <li>a meme</li>
+      <li>a reminder</li>
+      <li>inspiration</li>
+      <li>a learning opportunity</li>
+      <li>art</li>
+    </ul>
+
+    <p class="footer-text">
+      Today is April 17, 2026. What DFI is today could have new meaning by tomorrow.
+    </p>
+  `;
+
+  buttonField.appendChild(box);
 }
 
 renderDefaultMessage();
