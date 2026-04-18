@@ -59,10 +59,17 @@ html, body {
   cursor: pointer;
 }
 
+/* Main lower area */
+.main-area {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
 /* Content */
 .button-field {
   padding: 20px;
-  flex-grow: 1;
+  flex: 1;
   overflow-y: auto;
 }
 
@@ -122,13 +129,30 @@ html, body {
   color: #f2f2f2;
 }
 
+/* Right panel beside stack */
+.side-panel {
+  flex: 1;
+  padding: 20px 20px 20px 0;
+  display: flex;
+  align-items: flex-start;
+}
+
+.side-panel-content {
+  width: 100%;
+  min-height: 180px;
+}
+
 /* STACK MENU STYLE */
+.stack-wrap {
+  width: 240px;
+  padding: 20px;
+  border-left: 2px solid #333;
+}
+
 .stack {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 20px;
-  border-top: 2px solid #333;
 }
 
 /* ONLY stack buttons get extrusion */
@@ -182,16 +206,29 @@ html, body {
     <button id="dateBtn">Date</button>
   </div>
 
-  <!-- Content -->
-  <div class="button-field" id="buttonField"></div>
+  <div class="main-area">
+    <!-- Left / main content -->
+    <div class="button-field" id="buttonField"></div>
 
-  <!-- MENU LOADS HERE -->
-  <div id="menuMount"></div>
+    <!-- Right side: stack + text area -->
+    <div class="stack-wrap">
+      <div class="stack">
+        <button onclick="show('form')">form</button>
+        <button onclick="show('forum')">forum</button>
+        <button onclick="show('privacy')">privacy</button>
+        <button onclick="show('formula')">.formula</button>
+      </div>
+      <div class="side-panel">
+        <div class="side-panel-content" id="sidePanelContent"></div>
+      </div>
+    </div>
+  </div>
 
 </div>
 
 <script>
 const buttonField = document.getElementById('buttonField');
+const sidePanelContent = document.getElementById('sidePanelContent');
 const dateBtn = document.getElementById('dateBtn');
 
 /* default content */
@@ -226,6 +263,10 @@ function renderDefaultMessage() {
   `;
 }
 
+function clearSidePanel() {
+  sidePanelContent.innerHTML = '';
+}
+
 function toggleDFIPost() {
   const content = document.getElementById('dfiPostContent');
   if (!content) return;
@@ -239,8 +280,21 @@ function toggleDFIPost() {
 
 /* navigation */
 function show(type) {
+  if (type === 'form') {
+    sidePanelContent.innerHTML = `
+      <div class="dfi-box">
+        <p>
+          The form submission on drugfreeinu.forum is built from code that doesn’t send, save, or record anything that is typed into the form.
+        </p>
+        <p>(select to view the code)</p>
+        <p>Screenshot or copy text to save a form</p>
+      </div>
+    `;
+    return;
+  }
+
   if (type === 'privacy') {
-    buttonField.innerHTML = `
+    sidePanelContent.innerHTML = `
       <div class="dfi-box">
         <p>
           The form submission on drugfreeinu.forum is built from code that doesn’t send, save, or record anything that is typed into the form.
@@ -248,34 +302,25 @@ function show(type) {
         <p>(select to view the code)</p>
       </div>
     `;
+    return;
   }
 
   if (type === 'formula') {
-    buttonField.innerHTML = `
+    sidePanelContent.innerHTML = `
       <div class="dfi-box">
         <p>A calculation to see how the theories on .forum came from using the art of thought.</p>
         <p><strong>art + thought = theory</strong></p>
       </div>
     `;
+    return;
   }
 
   if (type === 'forum') {
+    clearSidePanel();
     renderDefaultMessage();
-  }
-
-  if (type === 'form') {
-    buttonField.innerHTML = `
-      <div class="dfi-box">Form goes here</div>
-    `;
+    return;
   }
 }
-
-/* LOAD menu.html */
-fetch('menu.html')
-  .then(res => res.text())
-  .then(data => {
-    document.getElementById('menuMount').innerHTML = data;
-  });
 
 dateBtn.addEventListener('click', () => {
   alert("Date button clicked.");
