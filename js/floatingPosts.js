@@ -1,5 +1,6 @@
 let floatAnimationId = null;
 let floatingItems = [];
+let expandedPost = null;
 
 function stopFloatingPosts() {
   if (floatAnimationId) {
@@ -71,15 +72,22 @@ function startFloatingPosts() {
 }
 
 function expandPost(el) {
-  stopFloatingPosts();
-
   const field = document.getElementById('postField');
   if (!field) return;
 
   const posts = [...field.querySelectorAll('.floating-post')];
 
+  if (expandedPost === el) {
+    closeExpandedPost();
+    return;
+  }
+
+  stopFloatingPosts();
+  expandedPost = el;
+
   posts.forEach(p => {
     if (p !== el) p.classList.add('post-dim');
+    else p.classList.remove('post-dim');
   });
 
   const rect = field.getBoundingClientRect();
@@ -92,6 +100,33 @@ function expandPost(el) {
   el.style.transform = `translate(${centerX}px, ${centerY}px)`;
 }
 
+function closeExpandedPost() {
+  const field = document.getElementById('postField');
+  if (!field || !expandedPost) return;
+
+  const posts = [...field.querySelectorAll('.floating-post')];
+  const el = expandedPost;
+
+  posts.forEach(p => p.classList.remove('post-dim'));
+  el.classList.remove('expanded');
+
+  const width = field.clientWidth;
+  const height = field.clientHeight;
+  const w = el.offsetWidth;
+  const h = el.offsetHeight;
+
+  const targetX = Math.random() * Math.max(0, width - w);
+  const targetY = Math.random() * Math.max(0, height - h);
+
+  el.style.transform = `translate(${targetX}px, ${targetY}px)`;
+
+  expandedPost = null;
+
+  setTimeout(() => {
+    startFloatingPosts();
+  }, 400);
+}
+
 function resetPosts() {
   const posts = document.querySelectorAll('.floating-post');
 
@@ -101,5 +136,6 @@ function resetPosts() {
     p.style.transform = '';
   });
 
+  expandedPost = null;
   startFloatingPosts();
 }
