@@ -75,6 +75,41 @@ html, body {
   line-height: 1.6;
 }
 
+.dfi-box h1 {
+  margin: 0 0 20px 0;
+  font-size: 2rem;
+  color: #f2f2f2;
+}
+
+.dfi-box p {
+  margin: 0 0 20px 0;
+  font-size: 1rem;
+  color: #e0e0e0;
+}
+
+.dfi-box .section-title {
+  margin-bottom: 12px;
+  font-weight: 700;
+  color: #f2f2f2;
+}
+
+.dfi-box ul {
+  margin: 0 0 28px 0;
+  padding-left: 28px;
+}
+
+.dfi-box li {
+  margin: 6px 0;
+  font-size: 1rem;
+  color: #e0e0e0;
+}
+
+.dfi-box .footer-text {
+  margin-top: 10px;
+  font-size: 1rem;
+  color: #f2f2f2;
+}
+
 /* STACK MENU STYLE */
 .stack {
   display: flex;
@@ -145,23 +180,52 @@ html, body {
 
 <script>
 const buttonField = document.getElementById('buttonField');
+const dateBtn = document.getElementById('dateBtn');
 
 /* default content */
 function renderDefaultMessage() {
-  buttonField.innerHTML = `
-    <div class="dfi-box">
-      <h1>What is DFI?</h1>
-      <p>The question can be thought of as an opinion.</p>
-    </div>
-  `;
+  buttonField.innerHTML = '';
 }
 
 /* navigation */
 function show(type) {
+  if (type === 'dfi') {
+    buttonField.innerHTML = `
+      <div class="dfi-box">
+        <h1>What is DFI?</h1>
+
+        <p>
+          The question can be thought of as an opinion. It depends on who is being asked
+          the question or how it’s interacted with.
+        </p>
+
+        <p class="section-title">Could be seen as:</p>
+
+        <ul>
+          <li>nothing</li>
+          <li>a tool</li>
+          <li>a way of life</li>
+          <li>a meme</li>
+          <li>a reminder</li>
+          <li>inspiration</li>
+          <li>a learning opportunity</li>
+          <li>art</li>
+        </ul>
+
+        <p class="footer-text">
+          Today is April 17, 2026. What DFI is today could have new meaning by tomorrow.
+        </p>
+      </div>
+    `;
+  }
+
   if (type === 'privacy') {
     buttonField.innerHTML = `
       <div class="dfi-box">
-        The form submission on drugfreeinu.forum does not send, store, or record data.
+        <p>
+          The form submission on drugfreeinu.forum is built from code that doesn’t send, save, or record anything that is typed into the form.
+        </p>
+        <p>(select to view the code)</p>
       </div>
     `;
   }
@@ -169,7 +233,8 @@ function show(type) {
   if (type === 'formula') {
     buttonField.innerHTML = `
       <div class="dfi-box">
-        <strong>art + thought = theory</strong>
+        <p>A calculation to see how the theories on .forum came from using the art of thought.</p>
+        <p><strong>art + thought = theory</strong></p>
       </div>
     `;
   }
@@ -191,6 +256,10 @@ fetch('menu.html')
   .then(data => {
     document.getElementById('menuMount').innerHTML = data;
   });
+
+dateBtn.addEventListener('click', () => {
+  alert("Date button clicked.");
+});
 
 renderDefaultMessage();
 </script>
