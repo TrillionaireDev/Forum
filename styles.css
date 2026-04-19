@@ -160,12 +160,14 @@ html, body {
 .form-layout {
   position: absolute;
   inset: 0;
+  z-index: 1;
 }
 
 .form-bottom-left.wide {
   position: absolute;
   left: 20px;
-  bottom: 20px;
+  top: 20px;
+  z-index: 3;
 }
 
 .dot-frame {
@@ -294,7 +296,7 @@ html, body {
 
   .form-bottom-left.wide {
     left: 14px;
-    bottom: 14px;
+    top: 14px;
   }
 
   .dot-frame {
