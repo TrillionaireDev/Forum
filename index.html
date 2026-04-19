@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -160,6 +161,34 @@ html, body {
   opacity: 0.2;
 }
 
+/* form area */
+.form-pair-wrap {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-pair {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  flex-wrap: wrap;
+}
+
+.form-frame {
+  width: 320px;
+  height: 120px;
+  border: none;
+  background: transparent;
+  display: block;
+  overflow: hidden;
+}
+
 /* Bottom area */
 #menuMount {
   display: flex;
@@ -274,6 +303,11 @@ html, body {
   .floating-post {
     max-width: 280px;
   }
+
+  .form-frame {
+    width: 100%;
+    max-width: 320px;
+  }
 }
 </style>
 </head>
@@ -346,6 +380,19 @@ function renderDefaultMessage() {
   });
 }
 
+function renderFormFields() {
+  stopFloatingPosts();
+
+  buttonField.innerHTML = `
+    <div class="form-pair-wrap">
+      <div class="form-pair">
+        <iframe class="form-frame" src="grass.html" title="Grass form left"></iframe>
+        <iframe class="form-frame" src="grass.html" title="Grass form right"></iframe>
+      </div>
+    </div>
+  `;
+}
+
 function show(type) {
   setActiveButton(type);
 
@@ -354,6 +401,7 @@ function show(type) {
   }
 
   if (type === 'form') {
+    renderFormFields();
     sideInfo.innerHTML = `
       <div class="side-info-inner">
         <p>Screenshot or copy&amp;paste the form to save it.</p>
@@ -363,6 +411,7 @@ function show(type) {
   }
 
   if (type === 'privacy') {
+    buttonField.innerHTML = '';
     sideInfo.innerHTML = `
       <div class="side-info-inner">
         <p>
@@ -375,6 +424,7 @@ function show(type) {
   }
 
   if (type === 'formula') {
+    buttonField.innerHTML = '';
     sideInfo.innerHTML = `
       <div class="side-info-inner">
         <p>A calculation to see how the theories on .forum came from using the art of thought.</p>
