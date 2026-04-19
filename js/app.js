@@ -50,11 +50,19 @@ function renderFormFields() {
 
   buttonField.innerHTML = `
     <div class="form-layout">
-      <div class="form-bottom-left wide">
+      <div class="form-top-left wide">
         <iframe
           class="dot-frame"
           src="dots.html"
           title="Dot input"
+        ></iframe>
+      </div>
+
+      <div class="form-bottom-left wide">
+        <iframe
+          class="grass-frame"
+          src="grass.html"
+          title="Grass input"
         ></iframe>
       </div>
     </div>
