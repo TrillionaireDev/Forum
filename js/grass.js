@@ -1,6 +1,4 @@
 function mountGrassField(target) {
-  const isSmall = target.classList.contains('small');
-
   target.innerHTML = `
     <div class="field">
       <div class="grass-strip"></div>
@@ -10,14 +8,15 @@ function mountGrassField(target) {
     </div>
   `;
 
+  const field = target.querySelector(".field");
   const grassStrip = target.querySelector(".grass-strip");
   const clippings = target.querySelector(".clippings");
   const input = target.querySelector(".grass-input");
   const measure = target.querySelector(".measure");
 
-  const bladeCount = isSmall ? 82 : 95;
+  const bladeCount = 110;
   const blades = [];
-  const leftPadding = isSmall ? 14 : 16;
+  const leftPadding = 16;
   let prevTextWidth = 0;
 
   function rand(min, max) {
@@ -31,22 +30,12 @@ function mountGrassField(target) {
     let baseHeight;
     const r = Math.random();
 
-    if (isSmall) {
-      if (r < 0.2) {
-        baseHeight = rand(12, 20);
-      } else if (r < 0.7) {
-        baseHeight = rand(20, 34);
-      } else {
-        baseHeight = rand(34, 48);
-      }
+    if (r < 0.18) {
+      baseHeight = rand(14, 24);
+    } else if (r < 0.72) {
+      baseHeight = rand(24, 42);
     } else {
-      if (r < 0.2) {
-        baseHeight = rand(14, 24);
-      } else if (r < 0.7) {
-        baseHeight = rand(24, 40);
-      } else {
-        baseHeight = rand(42, 60);
-      }
+      baseHeight = rand(42, 62);
     }
 
     const tilt = rand(-14, 14);
@@ -66,8 +55,13 @@ function mountGrassField(target) {
     blades.push(blade);
   }
 
-  for (let i = 0; i < bladeCount; i++) {
-    makeBlade(i);
+  function buildGrass() {
+    grassStrip.innerHTML = "";
+    blades.length = 0;
+
+    for (let i = 0; i < bladeCount; i++) {
+      makeBlade(i);
+    }
   }
 
   function getTextWidth() {
@@ -91,8 +85,8 @@ function mountGrassField(target) {
     piece.style.background = color;
     piece.style.setProperty("--start-rot", `${tilt}deg`);
     piece.style.setProperty("--end-rot", `${tilt + rand(-18, 18)}deg`);
-    piece.style.setProperty("--fall-y", `${rand(14, 28)}px`);
-    piece.style.setProperty("--drift-x", `${rand(-4, 4)}px`);
+    piece.style.setProperty("--fall-y", `${rand(14, 30)}px`);
+    piece.style.setProperty("--drift-x", `${rand(-5, 5)}px`);
 
     clippings.appendChild(piece);
     piece.addEventListener("animationend", () => piece.remove());
@@ -115,12 +109,12 @@ function mountGrassField(target) {
       const prevHeight = parseFloat(blade.dataset.currentHeight);
       const baseTilt = parseFloat(blade.dataset.baseTilt);
 
-      const softness = isSmall ? 14 : 16;
+      const softness = 18;
       let influence = 0;
 
       if (bladeCenter >= cutStart && bladeCenter <= cutEnd) {
         const distToEdge = Math.min(bladeCenter - cutStart, cutEnd - bladeCenter);
-        influence = Math.min(1, 0.75 + distToEdge / 24);
+        influence = Math.min(1, 0.76 + distToEdge / 24);
       } else if (bladeCenter > cutEnd && bladeCenter < cutEnd + softness) {
         influence = 1 - (bladeCenter - cutEnd) / softness;
       } else if (bladeCenter < cutStart && bladeCenter > cutStart - softness) {
@@ -132,7 +126,11 @@ function mountGrassField(target) {
       let targetHeight = baseHeight;
 
       if (textWidth > 0 && influence > 0) {
-        const cutStrength = baseHeight > 40 ? 0.82 : baseHeight > 24 ? 0.72 : 0.58;
+        const cutStrength =
+          baseHeight > 42 ? 0.84 :
+          baseHeight > 24 ? 0.72 :
+          0.58;
+
         targetHeight = Math.max(5, baseHeight * (1 - influence * cutStrength));
       }
 
@@ -141,7 +139,7 @@ function mountGrassField(target) {
 
       blade.style.transitionDelay = "0ms";
 
-      if (!isDeletion && cutAmountPx > 7 && Math.random() < 0.35) {
+      if (!isDeletion && cutAmountPx > 7 && Math.random() < 0.34) {
         spawnClipping(blade, cutAmountPx * rand(0.55, 0.9));
       }
 
@@ -153,6 +151,7 @@ function mountGrassField(target) {
           const maxBand = Math.max(prevCutEnd - cutEnd, 1);
           const progress = distFromOldRight / maxBand;
           const delay = progress * 220;
+
           blade.style.transitionDelay = `${delay}ms`;
         }
       }
@@ -165,6 +164,16 @@ function mountGrassField(target) {
     prevTextWidth = textWidth;
   }
 
+  buildGrass();
   input.addEventListener("input", updateGrass);
+
+  window.addEventListener("resize", () => {
+    const currentValue = input.value;
+    buildGrass();
+    prevTextWidth = 0;
+    input.value = currentValue;
+    updateGrass();
+  });
+
   updateGrass();
 }
