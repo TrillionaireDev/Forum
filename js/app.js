@@ -51,12 +51,14 @@ function renderFormFields() {
   buttonField.innerHTML = `
     <div class="form-layout">
       <div class="form-bottom-left wide">
-        <div class="grass-slot wide" id="grassSlotMain"></div>
+        <iframe
+          class="dot-frame"
+          src="dots.html"
+          title="Dot input"
+        ></iframe>
       </div>
     </div>
   `;
-
-  mountGrassField(document.getElementById('grassSlotMain'));
 }
 
 function show(type) {
