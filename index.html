@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,6 +16,10 @@ html, body {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 .browser-window {
@@ -163,8 +166,8 @@ html, body {
 
 /* form area */
 .form-pair-wrap {
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -172,21 +175,109 @@ html, body {
 
 .form-pair {
   display: flex;
-  gap: 24px;
+  gap: 28px;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  height: 100%;
   flex-wrap: wrap;
 }
 
-.form-frame {
-  width: 320px;
-  height: 120px;
-  border: none;
-  background: transparent;
-  display: block;
+.grass-slot {
+  width: 260px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* grass field */
+.field {
+  position: relative;
+  width: 260px;
+  height: 80px;
+  background: #cfcfcf;
+  border-radius: 999px;
   overflow: hidden;
+}
+
+.measure {
+  position: absolute;
+  visibility: hidden;
+  white-space: pre;
+  padding: 0;
+  margin: 0;
+  font-family: "Chalkboard SE", "Comic Sans MS", cursive;
+  font-size: 26px;
+  letter-spacing: 0;
+}
+
+.field input {
+  position: relative;
+  z-index: 4;
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: "Chalkboard SE", "Comic Sans MS", cursive;
+  font-size: 26px;
+  letter-spacing: 0;
+  color: #111;
+  padding: 0 16px;
+}
+
+.field input::placeholder {
+  color: #666;
+}
+
+.grass-strip {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 64px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.blade {
+  position: absolute;
+  bottom: 0;
+  width: 3px;
+  border-radius: 50% 50% 0 0;
+  transform-origin: bottom center;
+  clip-path: polygon(50% 0%, 70% 20%, 100% 100%, 0% 100%, 30% 20%);
+  transition: height 180ms ease, transform 180ms ease;
+}
+
+.clippings {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.clip-piece {
+  position: absolute;
+  width: 3px;
+  border-radius: 50% 50% 0 0;
+  clip-path: polygon(50% 0%, 70% 20%, 100% 100%, 0% 100%, 30% 20%);
+  transform-origin: bottom center;
+  animation: fall 650ms ease-in forwards;
+  opacity: 0.95;
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(0) rotate(var(--start-rot));
+    opacity: 0.95;
+  }
+  70% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateY(var(--fall-y)) translateX(var(--drift-x)) rotate(var(--end-rot));
+    opacity: 0;
+  }
 }
 
 /* Bottom area */
@@ -304,9 +395,9 @@ html, body {
     max-width: 280px;
   }
 
-  .form-frame {
-    width: 100%;
-    max-width: 320px;
+  .grass-slot {
+    width: 260px;
+    height: 80px;
   }
 }
 </style>
@@ -380,17 +471,179 @@ function renderDefaultMessage() {
   });
 }
 
+function mountGrassField(target) {
+  target.innerHTML = `
+    <div class="field">
+      <div class="grass-strip"></div>
+      <div class="clippings"></div>
+      <input class="grass-input" placeholder="Statement..." />
+      <span class="measure"></span>
+    </div>
+  `;
+
+  const grassStrip = target.querySelector(".grass-strip");
+  const clippings = target.querySelector(".clippings");
+  const input = target.querySelector(".grass-input");
+  const measure = target.querySelector(".measure");
+
+  const bladeCount = 95;
+  const blades = [];
+  const leftPadding = 16;
+  let prevTextWidth = 0;
+
+  function rand(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  function makeBlade(i) {
+    const blade = document.createElement("div");
+    blade.className = "blade";
+
+    let baseHeight;
+    const r = Math.random();
+
+    if (r < 0.2) {
+      baseHeight = rand(14, 24);
+    } else if (r < 0.7) {
+      baseHeight = rand(24, 40);
+    } else {
+      baseHeight = rand(42, 60);
+    }
+
+    const tilt = rand(-14, 14);
+    const hue = rand(105, 128);
+    const light = rand(26, 44);
+
+    blade.dataset.baseHeight = baseHeight.toFixed(2);
+    blade.dataset.currentHeight = baseHeight.toFixed(2);
+    blade.dataset.baseTilt = tilt.toFixed(2);
+
+    blade.style.left = `${i * 1.05}%`;
+    blade.style.height = `${baseHeight}px`;
+    blade.style.transform = `rotate(${tilt}deg)`;
+    blade.style.background = `hsl(${hue}, 50%, ${light}%)`;
+
+    grassStrip.appendChild(blade);
+    blades.push(blade);
+  }
+
+  for (let i = 0; i < bladeCount; i++) {
+    makeBlade(i);
+  }
+
+  function getTextWidth() {
+    measure.textContent = input.value || "";
+    return measure.offsetWidth;
+  }
+
+  function spawnClipping(blade, cutAmountPx) {
+    if (cutAmountPx < 6) return;
+
+    const bladeLeft = blade.offsetLeft;
+    const oldHeight = parseFloat(blade.dataset.currentHeight);
+    const tilt = parseFloat(blade.dataset.baseTilt);
+    const color = blade.style.background;
+
+    const piece = document.createElement("div");
+    piece.className = "clip-piece";
+    piece.style.left = `${bladeLeft}px`;
+    piece.style.bottom = `${Math.max(0, oldHeight - cutAmountPx)}px`;
+    piece.style.height = `${Math.max(5, cutAmountPx)}px`;
+    piece.style.background = color;
+    piece.style.setProperty("--start-rot", `${tilt}deg`);
+    piece.style.setProperty("--end-rot", `${tilt + rand(-18, 18)}deg`);
+    piece.style.setProperty("--fall-y", `${rand(14, 28)}px`);
+    piece.style.setProperty("--drift-x", `${rand(-4, 4)}px`);
+
+    clippings.appendChild(piece);
+    piece.addEventListener("animationend", () => piece.remove());
+  }
+
+  function updateGrass(event) {
+    const textWidth = getTextWidth();
+    const cutStart = leftPadding;
+    const cutEnd = leftPadding + textWidth;
+
+    const prevCutEnd = leftPadding + prevTextWidth;
+    const isDeletion =
+      (event && event.inputType && event.inputType.startsWith("delete")) ||
+      textWidth < prevTextWidth;
+
+    blades.forEach((blade) => {
+      const bladeLeft = blade.offsetLeft;
+      const bladeCenter = bladeLeft + 1.5;
+      const baseHeight = parseFloat(blade.dataset.baseHeight);
+      const prevHeight = parseFloat(blade.dataset.currentHeight);
+      const baseTilt = parseFloat(blade.dataset.baseTilt);
+
+      const softness = 16;
+      let influence = 0;
+
+      if (bladeCenter >= cutStart && bladeCenter <= cutEnd) {
+        const distToEdge = Math.min(bladeCenter - cutStart, cutEnd - bladeCenter);
+        influence = Math.min(1, 0.75 + distToEdge / 24);
+      } else if (bladeCenter > cutEnd && bladeCenter < cutEnd + softness) {
+        influence = 1 - (bladeCenter - cutEnd) / softness;
+      } else if (bladeCenter < cutStart && bladeCenter > cutStart - softness) {
+        influence = 1 - (cutStart - bladeCenter) / softness;
+      }
+
+      influence = Math.max(0, Math.min(influence, 1));
+
+      let targetHeight = baseHeight;
+
+      if (textWidth > 0 && influence > 0) {
+        const cutStrength = baseHeight > 40 ? 0.82 : baseHeight > 24 ? 0.72 : 0.58;
+        targetHeight = Math.max(5, baseHeight * (1 - influence * cutStrength));
+      }
+
+      const newTilt = baseTilt * (1 - influence * 0.6);
+      const cutAmountPx = prevHeight - targetHeight;
+
+      blade.style.transitionDelay = "0ms";
+
+      if (!isDeletion && cutAmountPx > 7 && Math.random() < 0.35) {
+        spawnClipping(blade, cutAmountPx * rand(0.55, 0.9));
+      }
+
+      if (isDeletion && prevTextWidth > textWidth) {
+        const inRegrowBand = bladeCenter > cutEnd && bladeCenter <= prevCutEnd;
+
+        if (inRegrowBand) {
+          const distFromOldRight = prevCutEnd - bladeCenter;
+          const maxBand = Math.max(prevCutEnd - cutEnd, 1);
+          const progress = distFromOldRight / maxBand;
+          const delay = progress * 220;
+          blade.style.transitionDelay = `${delay}ms`;
+        }
+      }
+
+      blade.dataset.currentHeight = targetHeight.toFixed(2);
+      blade.style.height = `${targetHeight}px`;
+      blade.style.transform = `rotate(${newTilt}deg)`;
+    });
+
+    prevTextWidth = textWidth;
+  }
+
+  input.addEventListener("input", updateGrass);
+  updateGrass();
+}
+
 function renderFormFields() {
   stopFloatingPosts();
 
   buttonField.innerHTML = `
     <div class="form-pair-wrap">
       <div class="form-pair">
-        <iframe class="form-frame" src="grass.html" title="Grass form left"></iframe>
-        <iframe class="form-frame" src="grass.html" title="Grass form right"></iframe>
+        <div class="grass-slot" id="grassSlot1"></div>
+        <div class="grass-slot" id="grassSlot2"></div>
       </div>
     </div>
   `;
+
+  mountGrassField(document.getElementById('grassSlot1'));
+  mountGrassField(document.getElementById('grassSlot2'));
 }
 
 function show(type) {
