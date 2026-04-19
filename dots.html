@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Typing Drops Dots</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  background: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.field {
+  position: relative;
+  width: 360px;
+  height: 80px;
+  background: #fff;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.measure {
+  position: absolute;
+  visibility: hidden;
+  white-space: pre;
+  padding: 0;
+  margin: 0;
+  font-family: "Chalkboard SE", "Comic Sans MS", cursive;
+  font-size: 26px;
+  letter-spacing: 0;
+}
+
+.field input {
+  position: relative;
+  z-index: 4;
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: "Chalkboard SE", "Comic Sans MS", cursive;
+  font-size: 26px;
+  letter-spacing: 0;
+  color: #2f6dff;
+  padding: 0 16px;
+}
+
+.field input::placeholder {
+  color: #2f6dff;
+  opacity: 1;
+}
+
+.dot-strip {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 8px;
+  height: 22px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.dot {
+  position: absolute;
+  bottom: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #2f6dff;
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+
+.dot-falls {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.fall-dot {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #2f6dff;
+  animation: dotFall 700ms ease-in forwards;
+}
+
+@keyframes dotFall {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(26px);
+    opacity: 0;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="field">
+  <div class="dot-strip" id="dotStrip"></div>
+  <div class="dot-falls" id="dotFalls"></div>
+  <input id="dotInput" placeholder="Statement..." />
+  <span class="measure" id="measure"></span>
+</div>
+
+<script>
+const dotStrip = document.getElementById("dotStrip");
+const dotFalls = document.getElementById("dotFalls");
+const input = document.getElementById("dotInput");
+const measure = document.getElementById("measure");
+
+const dotCount = 52;
+const dots = [];
+const leftPadding = 16;
+let prevTextWidth = 0;
+
+function rand(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+function makeDot(i) {
+  const dot = document.createElement("div");
+  dot.className = "dot";
+
+  dot.dataset.visible = "1";
+  dot.style.left = `${i * (100 / dotCount)}%`;
+
+  const rise = rand(-1, 1);
+  dot.style.transform = `translateY(${rise}px)`;
+
+  dotStrip.appendChild(dot);
+  dots.push(dot);
+}
+
+for (let i = 0; i < dotCount; i++) {
+  makeDot(i);
+}
+
+function getTextWidth() {
+  measure.textContent = input.value || "";
+  return measure.offsetWidth;
+}
+
+function spawnFallingDot(sourceDot) {
+  const piece = document.createElement("div");
+  piece.className = "fall-dot";
+  piece.style.left = `${sourceDot.offsetLeft}px`;
+  piece.style.bottom = `8px`;
+
+  dotFalls.appendChild(piece);
+  piece.addEventListener("animationend", () => piece.remove());
+}
+
+function updateDots(event) {
+  const textWidth = getTextWidth();
+  const cutStart = leftPadding;
+  const cutEnd = leftPadding + textWidth;
+
+  const prevCutEnd = leftPadding + prevTextWidth;
+  const isDeletion =
+    (event && event.inputType && event.inputType.startsWith("delete")) ||
+    textWidth < prevTextWidth;
+
+  dots.forEach((dot) => {
+    const dotCenter = dot.offsetLeft + 3;
+    const wasVisible = dot.dataset.visible === "1";
+    const shouldHide = dotCenter >= cutStart && dotCenter <= cutEnd;
+
+    if (shouldHide) {
+      if (wasVisible && !isDeletion && Math.random() < 0.45) {
+        spawnFallingDot(dot);
+      }
+
+      dot.dataset.visible = "0";
+      dot.style.opacity = "0";
+      dot.style.transform = "translateY(6px)";
+      dot.style.transitionDelay = "0ms";
+    } else {
+      if (isDeletion && dotCenter > cutEnd && dotCenter <= prevCutEnd) {
+        const distFromOldRight = prevCutEnd - dotCenter;
+        const maxBand = Math.max(prevCutEnd - cutEnd, 1);
+        const progress = distFromOldRight / maxBand;
+        dot.style.transitionDelay = `${progress * 180}ms`;
+      } else {
+        dot.style.transitionDelay = "0ms";
+      }
+
+      dot.dataset.visible = "1";
+      dot.style.opacity = "1";
+      dot.style.transform = "translateY(0)";
+    }
+  });
+
+  prevTextWidth = textWidth;
+}
+
+input.addEventListener("input", updateDots);
+updateDots();
+</script>
+
+</body>
+</html>
