@@ -24,25 +24,25 @@ function renderDefaultMessage() {
     fetch('what.html').then(res => res.text()),
     fetch('when.html').then(res => res.text())
   ])
-  .then(([what, when]) => {
-    buttonField.innerHTML = `
-      <div class="post-row" id="postField">
-        <div class="floating-post" id="post1" onclick="expandPost(this)">${what}</div>
-        <div class="floating-post" id="post2" onclick="expandPost(this)">${when}</div>
-      </div>
-    `;
+    .then(([what, when]) => {
+      buttonField.innerHTML = `
+        <div class="post-row" id="postField">
+          <div class="floating-post" id="post1" onclick="expandPost(this)">${what}</div>
+          <div class="floating-post" id="post2" onclick="expandPost(this)">${when}</div>
+        </div>
+      `;
 
-    requestAnimationFrame(() => {
-      startFloatingPosts();
+      requestAnimationFrame(() => {
+        startFloatingPosts();
+      });
+    })
+    .catch(() => {
+      buttonField.innerHTML = `
+        <div class="dfi-box">
+          <p>Unable to load forum posts.</p>
+        </div>
+      `;
     });
-  })
-  .catch(() => {
-    buttonField.innerHTML = `
-      <div class="dfi-box">
-        <p>Unable to load forum posts.</p>
-      </div>
-    `;
-  });
 }
 
 function renderFormFields() {
@@ -50,20 +50,13 @@ function renderFormFields() {
 
   buttonField.innerHTML = `
     <div class="form-layout">
-      <div class="form-center">
-        <div class="grass-slot" id="grassSlot1"></div>
-        <div class="grass-slot" id="grassSlot2"></div>
-      </div>
-
-      <div class="form-bottom-left">
-        <div class="grass-slot small" id="grassSlot3"></div>
+      <div class="form-bottom-left wide">
+        <div class="grass-slot wide" id="grassSlotMain"></div>
       </div>
     </div>
   `;
 
-  mountGrassField(document.getElementById('grassSlot1'));
-  mountGrassField(document.getElementById('grassSlot2'));
-  mountGrassField(document.getElementById('grassSlot3'));
+  mountGrassField(document.getElementById('grassSlotMain'));
 }
 
 function show(type) {
