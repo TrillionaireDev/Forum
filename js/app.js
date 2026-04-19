@@ -51,7 +51,7 @@ function renderFormFields() {
 
   buttonField.innerHTML = `
     <div class="form-layout">
-      <div class="form-top-center">
+      <div class="form-top-left">
         <iframe
           class="dot-frame"
           src="dots.html"
