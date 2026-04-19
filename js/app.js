@@ -1,290 +1,181 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Grass Input</title>
+const buttonField = document.getElementById('buttonField');
+const sideInfo = document.getElementById('sideInfo');
+const dateBtn = document.getElementById('dateBtn');
+const menuButtons = document.getElementById('menuButtons');
 
-<style>
-* {
-  box-sizing: border-box;
-}
-
-html, body {
-  margin: 0;
-  width: 100%;
-  height: 100%;
-}
-
-body {
-  background: transparent;
-  overflow: hidden;
-}
-
-.field-wrap {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.field {
-  position: relative;
-  width: 360px;
-  height: 80px;
-  background: #cfcfcf;
-  border-radius: 999px;
-  overflow: hidden;
-}
-
-.measure {
-  position: absolute;
-  visibility: hidden;
-  white-space: pre;
-  padding: 0;
-  margin: 0;
-  font-family: "Chalkboard SE", "Comic Sans MS", cursive;
-  font-size: 26px;
-  letter-spacing: 0;
-}
-
-.field input {
-  position: relative;
-  z-index: 4;
-  width: 100%;
-  height: 100%;
-  border: none;
-  outline: none;
-  background: transparent;
-  font-family: "Chalkboard SE", "Comic Sans MS", cursive;
-  font-size: 26px;
-  letter-spacing: 0;
-  color: #111;
-  padding: 0 16px;
-}
-
-.field input::placeholder {
-  color: #666;
-}
-
-.grass-strip {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -2px;
-  height: 64px;
-  z-index: 2;
-  pointer-events: none;
-}
-
-.blade {
-  position: absolute;
-  bottom: 0;
-  width: 3px;
-  border-radius: 50% 50% 0 0;
-  transform-origin: bottom center;
-  clip-path: polygon(50% 0%, 70% 20%, 100% 100%, 0% 100%, 30% 20%);
-  transition: height 180ms ease, transform 180ms ease;
-}
-
-.clippings {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  pointer-events: none;
-}
-
-.clip-piece {
-  position: absolute;
-  width: 3px;
-  border-radius: 50% 50% 0 0;
-  clip-path: polygon(50% 0%, 70% 20%, 100% 100%, 0% 100%, 30% 20%);
-  transform-origin: bottom center;
-  animation: fall 650ms ease-in forwards;
-  opacity: 0.95;
-}
-
-@keyframes fall {
-  0% {
-    transform: translateY(0) rotate(var(--start-rot));
-    opacity: 0.95;
-  }
-  70% {
-    opacity: 0.85;
-  }
-  100% {
-    transform: translateY(var(--fall-y)) translateX(var(--drift-x)) rotate(var(--end-rot));
-    opacity: 0;
-  }
-}
-</style>
-</head>
-<body>
-
-<div class="field-wrap">
-  <div class="field">
-    <div class="grass-strip" id="grass"></div>
-    <div class="clippings" id="clippings"></div>
-    <input id="grassInput" placeholder="Statement..." />
-    <span class="measure" id="measure"></span>
-  </div>
-</div>
-
-<script>
-const grassStrip = document.getElementById("grass");
-const clippings = document.getElementById("clippings");
-const input = document.getElementById("grassInput");
-const measure = document.getElementById("measure");
-
-const bladeCount = 110;
-const blades = [];
-const leftPadding = 16;
-let prevTextWidth = 0;
-
-function rand(min, max) {
-  return Math.random() * (max - min) + min;
-}
-
-function makeBlade(i) {
-  const blade = document.createElement("div");
-  blade.className = "blade";
-
-  let baseHeight;
-  const r = Math.random();
-
-  if (r < 0.18) {
-    baseHeight = rand(14, 24);
-  } else if (r < 0.72) {
-    baseHeight = rand(24, 42);
-  } else {
-    baseHeight = rand(42, 62);
-  }
-
-  const tilt = rand(-14, 14);
-  const hue = rand(105, 128);
-  const light = rand(26, 44);
-
-  blade.dataset.baseHeight = baseHeight.toFixed(2);
-  blade.dataset.currentHeight = baseHeight.toFixed(2);
-  blade.dataset.baseTilt = tilt.toFixed(2);
-
-  blade.style.left = `${i * (100 / bladeCount)}%`;
-  blade.style.height = `${baseHeight}px`;
-  blade.style.transform = `rotate(${tilt}deg)`;
-  blade.style.background = `hsl(${hue}, 50%, ${light}%)`;
-
-  grassStrip.appendChild(blade);
-  blades.push(blade);
-}
-
-for (let i = 0; i < bladeCount; i++) {
-  makeBlade(i);
-}
-
-function getTextWidth() {
-  measure.textContent = input.value || "";
-  return measure.offsetWidth;
-}
-
-function spawnClipping(blade, cutAmountPx) {
-  if (cutAmountPx < 6) return;
-
-  const bladeLeft = blade.offsetLeft;
-  const oldHeight = parseFloat(blade.dataset.currentHeight);
-  const tilt = parseFloat(blade.dataset.baseTilt);
-  const color = blade.style.background;
-
-  const piece = document.createElement("div");
-  piece.className = "clip-piece";
-  piece.style.left = `${bladeLeft}px`;
-  piece.style.bottom = `${Math.max(0, oldHeight - cutAmountPx)}px`;
-  piece.style.height = `${Math.max(5, cutAmountPx)}px`;
-  piece.style.background = color;
-  piece.style.setProperty("--start-rot", `${tilt}deg`);
-  piece.style.setProperty("--end-rot", `${tilt + rand(-18, 18)}deg`);
-  piece.style.setProperty("--fall-y", `${rand(14, 30)}px`);
-  piece.style.setProperty("--drift-x", `${rand(-5, 5)}px`);
-
-  clippings.appendChild(piece);
-  piece.addEventListener("animationend", () => piece.remove());
-}
-
-function updateGrass(event) {
-  const textWidth = getTextWidth();
-  const cutStart = leftPadding;
-  const cutEnd = leftPadding + textWidth;
-
-  const prevCutEnd = leftPadding + prevTextWidth;
-  const isDeletion =
-    (event && event.inputType && event.inputType.startsWith("delete")) ||
-    textWidth < prevTextWidth;
-
-  blades.forEach((blade) => {
-    const bladeLeft = blade.offsetLeft;
-    const bladeCenter = bladeLeft + 1.5;
-    const baseHeight = parseFloat(blade.dataset.baseHeight);
-    const prevHeight = parseFloat(blade.dataset.currentHeight);
-    const baseTilt = parseFloat(blade.dataset.baseTilt);
-
-    const softness = 18;
-    let influence = 0;
-
-    if (bladeCenter >= cutStart && bladeCenter <= cutEnd) {
-      const distToEdge = Math.min(bladeCenter - cutStart, cutEnd - bladeCenter);
-      influence = Math.min(1, 0.76 + distToEdge / 24);
-    } else if (bladeCenter > cutEnd && bladeCenter < cutEnd + softness) {
-      influence = 1 - (bladeCenter - cutEnd) / softness;
-    } else if (bladeCenter < cutStart && bladeCenter > cutStart - softness) {
-      influence = 1 - (cutStart - bladeCenter) / softness;
-    }
-
-    influence = Math.max(0, Math.min(influence, 1));
-
-    let targetHeight = baseHeight;
-
-    if (textWidth > 0 && influence > 0) {
-      const cutStrength =
-        baseHeight > 42 ? 0.84 :
-        baseHeight > 24 ? 0.72 :
-        0.58;
-
-      targetHeight = Math.max(5, baseHeight * (1 - influence * cutStrength));
-    }
-
-    const newTilt = baseTilt * (1 - influence * 0.6);
-    const cutAmountPx = prevHeight - targetHeight;
-
-    blade.style.transitionDelay = "0ms";
-
-    if (!isDeletion && cutAmountPx > 7 && Math.random() < 0.34) {
-      spawnClipping(blade, cutAmountPx * rand(0.55, 0.9));
-    }
-
-    if (isDeletion && prevTextWidth > textWidth) {
-      const inRegrowBand = bladeCenter > cutEnd && bladeCenter <= prevCutEnd;
-
-      if (inRegrowBand) {
-        const distFromOldRight = prevCutEnd - bladeCenter;
-        const maxBand = Math.max(prevCutEnd - cutEnd, 1);
-        const progress = distFromOldRight / maxBand;
-        const delay = progress * 220;
-
-        blade.style.transitionDelay = `${delay}ms`;
-      }
-    }
-
-    blade.dataset.currentHeight = targetHeight.toFixed(2);
-    blade.style.height = `${targetHeight}px`;
-    blade.style.transform = `rotate(${newTilt}deg)`;
+function setActiveButton(type) {
+  document.querySelectorAll('.stack-item').forEach((item) => {
+    item.classList.toggle('active', item.dataset.type === type);
   });
-
-  prevTextWidth = textWidth;
 }
 
-input.addEventListener("input", updateGrass);
-updateGrass();
-</script>
+function clearMainArea() {
+  if (typeof stopFloatingPosts === 'function') {
+    stopFloatingPosts();
+  }
+  buttonField.innerHTML = '';
+}
 
-</body>
-</html>
+function renderDefaultMessage() {
+  clearMainArea();
+
+  Promise.all([
+    fetch('what.html').then((res) => res.text()),
+    fetch('when.html').then((res) => res.text())
+  ])
+    .then(([what, when]) => {
+      buttonField.innerHTML = `
+        <div class="post-row" id="postField">
+          <div class="floating-post" id="post1" onclick="expandPost(this)">${what}</div>
+          <div class="floating-post" id="post2" onclick="expandPost(this)">${when}</div>
+        </div>
+      `;
+
+      requestAnimationFrame(() => {
+        if (typeof startFloatingPosts === 'function') {
+          startFloatingPosts();
+        }
+      });
+    })
+    .catch(() => {
+      buttonField.innerHTML = `
+        <div class="dfi-box">
+          <p>Unable to load forum posts.</p>
+        </div>
+      `;
+    });
+}
+
+function renderFormFields() {
+  clearMainArea();
+
+  buttonField.innerHTML = `
+    <div class="form-layout">
+      <div class="form-top-center">
+        <iframe
+          class="dot-frame"
+          src="dots.html"
+          title="Dot input"
+        ></iframe>
+      </div>
+
+      <div class="form-bottom-left">
+        <iframe
+          class="grass-frame"
+          src="grass.html"
+          title="Grass input"
+        ></iframe>
+      </div>
+    </div>
+  `;
+}
+
+function renderPrivacy() {
+  clearMainArea();
+
+  sideInfo.innerHTML = `
+    <div class="side-info-inner">
+      <p>
+        The form submission on drugfreeinu.forum is built from code that doesn’t send, save, or record anything that is typed into the form.
+      </p>
+      <p>(select to view the code)</p>
+    </div>
+  `;
+}
+
+function renderFormula() {
+  clearMainArea();
+
+  sideInfo.innerHTML = `
+    <div class="side-info-inner">
+      <p>A calculation to see how the theories on .forum came from using the art of thought.</p>
+      <p><strong>art + thought = theory</strong></p>
+    </div>
+  `;
+}
+
+function renderFormInfo() {
+  sideInfo.innerHTML = `
+    <div class="side-info-inner">
+      <p>Screenshot or copy&amp;paste the form to save it.</p>
+    </div>
+  `;
+}
+
+function renderForumInfo() {
+  sideInfo.innerHTML = `
+    <div class="side-info-inner">
+      <p>
+        Information and beliefs from the artist’s mind behind DFI.
+      </p>
+    </div>
+  `;
+}
+
+function show(type) {
+  setActiveButton(type);
+
+  if (type === 'form') {
+    renderFormFields();
+    renderFormInfo();
+    return;
+  }
+
+  if (type === 'privacy') {
+    renderPrivacy();
+    return;
+  }
+
+  if (type === 'formula') {
+    renderFormula();
+    return;
+  }
+
+  if (type === 'forum') {
+    renderDefaultMessage();
+    renderForumInfo();
+  }
+}
+
+dateBtn.addEventListener('click', () => {
+  alert('Date button clicked.');
+});
+
+fetch('menu.html')
+  .then((res) => res.text())
+  .then((html) => {
+    menuButtons.innerHTML = html;
+    show('forum');
+  })
+  .catch(() => {
+    menuButtons.innerHTML = `
+      <div class="stack">
+
+        <div class="stack-item" data-type="form" onclick="show('form')">
+          <div class="layer l7"></div><div class="layer l6"></div><div class="layer l5"></div>
+          <div class="layer l4"></div><div class="layer l3"></div><div class="layer l2"></div><div class="layer l1"></div>
+          <button type="button">form</button>
+        </div>
+
+        <div class="stack-item" data-type="forum" onclick="show('forum')">
+          <div class="layer l7"></div><div class="layer l6"></div><div class="layer l5"></div>
+          <div class="layer l4"></div><div class="layer l3"></div><div class="layer l2"></div><div class="layer l1"></div>
+          <button type="button">forum</button>
+        </div>
+
+        <div class="stack-item" data-type="privacy" onclick="show('privacy')">
+          <div class="layer l7"></div><div class="layer l6"></div><div class="layer l5"></div>
+          <div class="layer l4"></div><div class="layer l3"></div><div class="layer l2"></div><div class="layer l1"></div>
+          <button type="button">privacy</button>
+        </div>
+
+        <div class="stack-item" data-type="formula" onclick="show('formula')">
+          <div class="layer l7"></div><div class="layer l6"></div><div class="layer l5"></div>
+          <div class="layer l4"></div><div class="layer l3"></div><div class="layer l2"></div><div class="layer l1"></div>
+          <button type="button">.formula</button>
+        </div>
+
+      </div>
+    `;
+    show('forum');
+  });
