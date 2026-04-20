@@ -52,19 +52,19 @@ function renderFormFields() {
   buttonField.innerHTML = `
     <div class="form-layout">
       <div class="form-top-left">
-        <iframe
-          class="dot-frame"
-          src="dots.html"
-          title="Dot input"
-        ></iframe>
-      </div>
+        <div class="dots-branch-wrap">
+          <iframe
+            class="dot-frame"
+            src="dots.html"
+            title="Dot input"
+          ></iframe>
 
-      <div class="form-top-right">
-        <iframe
-          class="branch-frame"
-          src="branch.html"
-          title="Branch input"
-        ></iframe>
+          <iframe
+            class="branch-frame"
+            src="branch.html"
+            title="Branch input"
+          ></iframe>
+        </div>
       </div>
 
       <div class="form-bottom-left">
