@@ -170,13 +170,6 @@ html, body {
   z-index: 3;
 }
 
-.form-top-right {
-  position: absolute;
-  right: 20px;
-  top: 20px;
-  z-index: 3;
-}
-
 .form-bottom-left {
   position: absolute;
   left: 20px;
@@ -184,7 +177,14 @@ html, body {
   z-index: 2;
 }
 
+/* dots + branch share the same anchor */
+.dots-branch-wrap {
+  position: relative;
+}
+
 .dot-frame {
+  position: relative;
+  z-index: 2;
   width: 360px;
   height: 80px;
   border: 0;
@@ -195,6 +195,10 @@ html, body {
 }
 
 .branch-frame {
+  position: absolute;
+  left: 0;
+  top: 58px;
+  z-index: 1;
   width: 360px;
   height: 220px;
   border: 0;
@@ -202,6 +206,7 @@ html, body {
   background: transparent;
   display: block;
   overflow: hidden;
+  pointer-events: none;
 }
 
 .grass-frame {
@@ -334,11 +339,6 @@ html, body {
     top: 14px;
   }
 
-  .form-top-right {
-    right: 14px;
-    top: 14px;
-  }
-
   .form-bottom-left {
     left: 14px;
     bottom: 14px;
@@ -352,6 +352,8 @@ html, body {
   }
 
   .branch-frame {
+    left: 0;
+    top: 56px;
     width: 62vw;
     max-width: 320px;
     min-width: 220px;
