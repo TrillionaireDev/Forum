@@ -199,7 +199,7 @@ html, body {
   left: -50px;
   top: 58px;
   z-index: 1;
-  width: 360px;
+  width: 400px;
   height: 220px;
   border: 0;
   outline: none;
@@ -353,9 +353,9 @@ html, body {
   .branch-frame {
     left: -50px;
     top: 56px;
-    width: 62vw;
-    max-width: 320px;
-    min-width: 220px;
+    width: 80vw;
+    max-width: 460px;
+    min-width: 260px;
     height: 180px;
   }
 
