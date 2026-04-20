@@ -206,7 +206,6 @@ html, body {
   background: transparent;
   display: block;
   overflow: hidden;
-  pointer-events: none;
 }
 
 .grass-frame {
