@@ -196,7 +196,7 @@ html, body {
 
 .branch-frame {
   position: absolute;
-  left: -40px;
+  left: -50px;
   top: 58px;
   z-index: 1;
   width: 360px;
@@ -352,7 +352,7 @@ html, body {
   }
 
   .branch-frame {
-    left: -40px;
+    left: -50px;
     top: 56px;
     width: 62vw;
     max-width: 320px;
