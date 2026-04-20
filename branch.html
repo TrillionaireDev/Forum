@@ -16,16 +16,17 @@ html, body {
 }
 
 body {
+  margin: 0;
   background: transparent;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   overflow: hidden;
   font-family: Arial, sans-serif;
+  position: relative;
 }
 
 .scene {
-  position: relative;
+  position: absolute;
+  left: -40px; /* move whole branch scene left */
+  top: 0;
   width: 520px;
   height: 320px;
 }
