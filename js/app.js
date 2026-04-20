@@ -59,6 +59,14 @@ function renderFormFields() {
         ></iframe>
       </div>
 
+      <div class="form-top-right">
+        <iframe
+          class="branch-frame"
+          src="branch.html"
+          title="Branch input"
+        ></iframe>
+      </div>
+
       <div class="form-bottom-left">
         <iframe
           class="grass-frame"
