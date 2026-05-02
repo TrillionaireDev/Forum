@@ -27,7 +27,6 @@ html, body {
   flex-direction: column;
 }
 
-/* Search */
 .search-container {
   display: flex;
   padding: 15px 20px;
@@ -57,7 +56,6 @@ html, body {
   cursor: pointer;
 }
 
-/* Main content */
 .button-field {
   position: relative;
   padding: 20px;
@@ -66,7 +64,6 @@ html, body {
   min-height: 0;
 }
 
-/* DFI Box */
 .dfi-box {
   border: 2px solid #333;
   border-radius: 10px;
@@ -110,7 +107,6 @@ html, body {
   color: #f2f2f2;
 }
 
-/* Clickable post preview */
 .post-preview {
   cursor: pointer;
   display: inline-block;
@@ -129,7 +125,6 @@ html, body {
   line-height: 1.2;
 }
 
-/* Floating forum field */
 .post-row {
   position: relative;
   width: 100%;
@@ -156,7 +151,6 @@ html, body {
   opacity: 0.2;
 }
 
-/* form layout */
 .form-layout {
   position: absolute;
   inset: 0;
@@ -173,11 +167,11 @@ html, body {
 .form-bottom-left {
   position: absolute;
   left: 20px;
-  bottom: 20px;
+  bottom: 0;
   z-index: 2;
+  width: calc(100% - 40px);
 }
 
-/* dots + branch share the same anchor */
 .dots-branch-wrap {
   position: relative;
 }
@@ -209,16 +203,17 @@ html, body {
 }
 
 .grass-frame {
-  width: 260px;
-  height: 80px;
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  height: 110px;
   border: 0;
   outline: none;
   background: transparent;
   display: block;
-  overflow: hidden;
+  overflow: visible;
 }
 
-/* Bottom area */
 #menuMount {
   display: flex;
   align-items: flex-start;
@@ -230,7 +225,6 @@ html, body {
   box-sizing: border-box;
 }
 
-/* stack */
 .stack {
   display: flex;
   flex-direction: column;
@@ -238,7 +232,6 @@ html, body {
   flex-shrink: 0;
 }
 
-/* layered menu items */
 .stack-item {
   position: relative;
   display: inline-block;
@@ -281,7 +274,6 @@ html, body {
   transform: translate(1px, 1px);
 }
 
-/* right-side panel */
 .side-info {
   flex: 1;
   min-width: 0;
@@ -312,7 +304,6 @@ html, body {
   color: #f2f2f2;
 }
 
-/* phone */
 @media (max-width: 700px) {
   .browser-window {
     width: 94vw;
@@ -340,7 +331,8 @@ html, body {
 
   .form-bottom-left {
     left: 14px;
-    bottom: 14px;
+    bottom: 0;
+    width: calc(100% - 28px);
   }
 
   .dot-frame {
@@ -360,9 +352,9 @@ html, body {
   }
 
   .grass-frame {
-    width: 62vw;
-    max-width: 260px;
-    min-width: 180px;
-    height: 80px;
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    height: 110px;
   }
 }
