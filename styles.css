@@ -304,6 +304,73 @@ html, body {
   color: #f2f2f2;
 }
 
+/* DFI keyboard */
+.dfi-keyboard {
+  width: 100%;
+  max-width: 600px;
+  transform: scale(0.72);
+  transform-origin: top left;
+}
+
+.dfi-keyboard .row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.dfi-keyboard .key {
+  min-width: 44px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  border-radius: 8px;
+  background: linear-gradient(
+    180deg,
+    #5aa9ff 0%,
+    #2f6bff 50%,
+    #1b3cff 100%
+  );
+  color: #a8b0b8;
+  opacity: 0.95;
+  animation: keyFloat 8s ease-in-out infinite;
+  transition: transform 0.15s ease, box-shadow 0.12s ease;
+}
+
+.dfi-keyboard .key.number {
+  background: linear-gradient(
+    180deg,
+    #4fd1c5 0%,
+    #14b8a6 50%,
+    #0f766e 100%
+  );
+  color: #363c40;
+}
+
+@keyframes keyFloat {
+  0% { transform: translate(0px, 0px); }
+  50% { transform: translate(1px, -4px); }
+  100% { transform: translate(0px, 0px); }
+}
+
+.dfi-keyboard .key:nth-child(odd) { animation-duration: 9s; }
+.dfi-keyboard .key:nth-child(3n) { animation-duration: 11s; }
+.dfi-keyboard .key:nth-child(5n) { animation-duration: 10s; }
+
+.dfi-keyboard .key:active {
+  transform: scale(0.94);
+}
+
+.dfi-keyboard .row.qwerty { padding-left: 0; }
+.dfi-keyboard .row.asdf { padding-left: 26px; }
+.dfi-keyboard .row.zxcv { padding-left: 52px; }
+
 @media (max-width: 700px) {
   .browser-window {
     width: 94vw;
@@ -356,5 +423,11 @@ html, body {
     max-width: none;
     min-width: 0;
     height: 110px;
+  }
+
+  .dfi-keyboard {
+    transform: scale(0.46);
+    transform-origin: top left;
+    max-width: 600px;
   }
 }
