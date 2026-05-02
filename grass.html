@@ -58,42 +58,6 @@ body {
   color: transparent;
 }
 
-/* DOT PLACEHOLDER */
-.dots {
-  position: absolute;
-  left: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  gap: 6px;
-  z-index: 4;
-  pointer-events: none;
-  transition: opacity 180ms ease;
-}
-
-.dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #777;
-  opacity: 0;
-  animation: fadeIn 1.8s infinite;
-}
-
-.dot:nth-child(1) { animation-delay: 0s; }
-.dot:nth-child(2) { animation-delay: 0.2s; }
-.dot:nth-child(3) { animation-delay: 0.4s; }
-
-@keyframes fadeIn {
-  0%, 100% { opacity: 0; }
-  50% { opacity: 1; }
-}
-
-/* hide dots when typing */
-.field.has-text .dots {
-  opacity: 0;
-}
-
 /* grass */
 .grass-strip {
   position: absolute;
@@ -145,12 +109,6 @@ body {
 <body>
 
 <div class="field" id="field">
-  <div class="dots">
-    <div class="dot"></div>
-    <div class="dot"></div>
-    <div class="dot"></div>
-  </div>
-
   <div class="grass-strip" id="grass"></div>
   <div class="clippings" id="clippings"></div>
 
@@ -221,8 +179,6 @@ function updateGrass(e) {
   const textWidth = getTextWidth();
   const cutStart = leftPadding;
   const cutEnd = leftPadding + textWidth;
-
-  field.classList.toggle("has-text", input.value.length > 0);
 
   blades.forEach((blade) => {
     const baseHeight = parseFloat(blade.dataset.baseHeight);
