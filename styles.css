@@ -199,7 +199,7 @@ html, body {
   outline: none;
   background: transparent;
   display: block;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .grass-frame {
@@ -304,7 +304,6 @@ html, body {
   color: #f2f2f2;
 }
 
-/* DFI keyboard */
 .dfi-keyboard {
   width: 100%;
   max-width: 600px;
@@ -416,6 +415,7 @@ html, body {
     max-width: 460px;
     min-width: 260px;
     height: 180px;
+    overflow: visible;
   }
 
   .grass-frame {
