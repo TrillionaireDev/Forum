@@ -188,18 +188,19 @@ html, body {
   overflow: hidden;
 }
 
+/* wider frame so left-shifted branch/leaves do not clip */
 .branch-frame {
   position: absolute;
-  left: -50px;
+  left: -90px;
   top: 58px;
   z-index: 1;
-  width: 400px;
-  height: 220px;
+  width: 560px;
+  height: 260px;
   border: 0;
   outline: none;
   background: transparent;
   display: block;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .grass-frame {
@@ -409,13 +410,13 @@ html, body {
   }
 
   .branch-frame {
-    left: -50px;
+    left: -90px;
     top: 56px;
-    width: 80vw;
-    max-width: 460px;
-    min-width: 260px;
-    height: 180px;
-    overflow: visible;
+    width: 95vw;
+    max-width: 560px;
+    min-width: 420px;
+    height: 260px;
+    overflow: hidden;
   }
 
   .grass-frame {
