@@ -51,6 +51,22 @@ function renderFormFields() {
 
   buttonField.innerHTML = `
     <div class="form-layout">
+
+      <iframe
+        src="fireflies.html"
+        title="Firefly background"
+        style="
+          position:absolute;
+          inset:0;
+          width:100%;
+          height:100%;
+          border:0;
+          z-index:0;
+          pointer-events:none;
+          background:transparent;
+        "
+      ></iframe>
+
       <div class="form-top-left">
         <div class="dots-branch-wrap">
           <iframe
