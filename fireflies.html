@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Fireflies Only</title>
+
+<style>
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+}
+
+.scene {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.firefly {
+  position: absolute;
+  width: var(--size);
+  height: var(--size);
+  left: var(--x);
+  top: var(--y);
+  border-radius: 50%;
+  background: #fff7a8;
+  box-shadow:
+    0 0 8px #fff7a8,
+    0 0 22px rgba(255, 226, 90, .9),
+    0 0 52px rgba(255, 194, 60, .55);
+  opacity: 0;
+  animation:
+    glow var(--pulse) ease-in-out infinite,
+    drift var(--drift) ease-in-out infinite alternate;
+  animation-delay: var(--delay);
+}
+
+.firefly::after {
+  content: "";
+  position: absolute;
+  inset: -18px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,230,120,.22), transparent 70%);
+  filter: blur(7px);
+}
+
+@keyframes glow {
+  0%, 100% { opacity: .08; transform: scale(.75); }
+  45% { opacity: .95; transform: scale(1.15); }
+  65% { opacity: .38; }
+}
+
+@keyframes drift {
+  from { translate: 0 0; }
+  to { translate: var(--dx) var(--dy); }
+}
+</style>
+</head>
+
+<body>
+
+<div class="scene" id="scene"></div>
+
+<script>
+const scene = document.getElementById("scene");
+const count = 86;
+
+for (let i = 0; i < count; i++) {
+  const f = document.createElement("span");
+  f.className = "firefly";
+
+  const size = 2 + Math.random() * 5;
+  const x = Math.random() * 100;
+  const y = 18 + Math.random() * 70;
+
+  f.style.setProperty("--size", `${size}px`);
+  f.style.setProperty("--x", `${x}vw`);
+  f.style.setProperty("--y", `${y}vh`);
+  f.style.setProperty("--pulse", `${2.4 + Math.random() * 4.8}s`);
+  f.style.setProperty("--drift", `${5 + Math.random() * 9}s`);
+  f.style.setProperty("--delay", `${Math.random() * -8}s`);
+  f.style.setProperty("--dx", `${-35 + Math.random() * 70}px`);
+  f.style.setProperty("--dy", `${-45 + Math.random() * 55}px`);
+
+  scene.appendChild(f);
+}
+</script>
+
+</body>
+</html>
