@@ -1,9 +1,16 @@
+
 function mountGrassField(target) {
   target.innerHTML = `
     <div class="field">
       <div class="grass-strip"></div>
       <div class="clippings"></div>
-      <input class="grass-input" placeholder="Statement..." />
+      <input 
+        class="grass-input"
+        autocorrect="off"
+        autocapitalize="off"
+        spellcheck="false"
+        autocomplete="off"
+      />
       <span class="measure"></span>
     </div>
   `;
@@ -17,11 +24,33 @@ function mountGrassField(target) {
   const bladeCount = 110;
   const blades = [];
   const leftPadding = 16;
+  const rightPadding = 16;
+
+  let textStartX = leftPadding;
   let prevTextWidth = 0;
 
   function rand(min, max) {
     return Math.random() * (max - min) + min;
   }
+
+  function setTextStart(x) {
+    const maxStart = Math.max(leftPadding, field.clientWidth - rightPadding - 20);
+    textStartX = Math.max(leftPadding, Math.min(x, maxStart));
+    input.style.paddingLeft = `${textStartX}px`;
+  }
+
+  field.addEventListener("pointerdown", (event) => {
+    const rect = field.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+
+    if (!input.value) {
+      setTextStart(x);
+      prevTextWidth = 0;
+      updateGrass();
+    }
+
+    input.focus();
+  });
 
   function makeBlade(i) {
     const blade = document.createElement("div");
@@ -30,13 +59,9 @@ function mountGrassField(target) {
     let baseHeight;
     const r = Math.random();
 
-    if (r < 0.18) {
-      baseHeight = rand(14, 24);
-    } else if (r < 0.72) {
-      baseHeight = rand(24, 42);
-    } else {
-      baseHeight = rand(42, 62);
-    }
+    if (r < 0.18) baseHeight = rand(14, 24);
+    else if (r < 0.72) baseHeight = rand(24, 42);
+    else baseHeight = rand(42, 62);
 
     const tilt = rand(-14, 14);
     const hue = rand(105, 128);
@@ -94,13 +119,17 @@ function mountGrassField(target) {
 
   function updateGrass(event) {
     const textWidth = getTextWidth();
-    const cutStart = leftPadding;
-    const cutEnd = leftPadding + textWidth;
+    const cutStart = textStartX;
+    const cutEnd = textStartX + textWidth;
 
-    const prevCutEnd = leftPadding + prevTextWidth;
+    const prevCutEnd = textStartX + prevTextWidth;
     const isDeletion =
       (event && event.inputType && event.inputType.startsWith("delete")) ||
       textWidth < prevTextWidth;
+
+    if (!input.value) {
+      prevTextWidth = 0;
+    }
 
     blades.forEach((blade) => {
       const bladeLeft = blade.offsetLeft;
@@ -165,6 +194,8 @@ function mountGrassField(target) {
   }
 
   buildGrass();
+  setTextStart(leftPadding);
+
   input.addEventListener("input", updateGrass);
 
   window.addEventListener("resize", () => {
