@@ -62,6 +62,27 @@ html, body {
   flex: 1;
   overflow: hidden;
   min-height: 0;
+
+  background-image: url("IMG_5429.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* keeps content above the background */
+.button-field > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* firefly layer sits between background and content */
+#fireflies,
+.fireflies {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  mix-blend-mode: screen;
 }
 
 .dfi-box {
@@ -154,7 +175,7 @@ html, body {
 .form-layout {
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 2;
 }
 
 .form-top-left {
