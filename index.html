@@ -15,7 +15,14 @@
       <button id="dateBtn">Date</button>
     </div>
 
-    <div class="button-field" id="buttonField"></div>
+    <div class="button-field" id="buttonField">
+      <iframe
+        id="privacyLight"
+        class="privacy-light-frame"
+        src="light.html"
+        title="Privacy Light"
+      ></iframe>
+    </div>
 
     <div id="menuMount">
       <div id="menuButtons"></div>
@@ -26,5 +33,22 @@
 
   <script src="js/floatingPosts.js"></script>
   <script src="js/app.js"></script>
+
+  <script>
+    document.addEventListener("click", (e) => {
+      const btn = e.target.closest("button");
+      if (!btn) return;
+
+      const label = btn.textContent.trim().toLowerCase();
+      const privacyLight = document.getElementById("privacyLight");
+
+      if (label === "privacy") {
+        privacyLight.classList.add("show");
+      } else if (["form", "forum", ".formula"].includes(label)) {
+        privacyLight.classList.remove("show");
+      }
+    });
+  </script>
+
 </body>
 </html>
