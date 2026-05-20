@@ -15,13 +15,35 @@
       <button id="dateBtn">Date</button>
     </div>
 
-    <div class="button-field" id="buttonField">
+    <div class="button-field" id="postField">
       <iframe
         id="privacyLight"
         class="privacy-light-frame"
         src="light.html"
         title="Privacy Light"
       ></iframe>
+
+      <div class="floating-post">
+        <div class="post-preview">
+          <div class="dfi-box">
+            <h2 class="post-title">What is DFI?</h2>
+            <div class="post-content">
+              DFI is an art project, belief system, and digital realm built from the artist’s mind behind DrugFreeInu.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="floating-post">
+        <div class="post-preview">
+          <div class="dfi-box">
+            <h2 class="post-title">When did DFI begin?</h2>
+            <div class="post-content">
+              DFI began as DrugFreeInu and later evolved into a larger archive of art, symbolism, entities, beliefs, and personal mythology.
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div id="menuMount">
@@ -33,22 +55,6 @@
 
   <script src="js/floatingPosts.js"></script>
   <script src="js/app.js"></script>
-
-  <script>
-    document.addEventListener("click", (e) => {
-      const btn = e.target.closest("button");
-      if (!btn) return;
-
-      const label = btn.textContent.trim().toLowerCase();
-      const privacyLight = document.getElementById("privacyLight");
-
-      if (label === "privacy") {
-        privacyLight.classList.add("show");
-      } else if (["form", "forum", ".formula"].includes(label)) {
-        privacyLight.classList.remove("show");
-      }
-    });
-  </script>
 
 </body>
 </html>
