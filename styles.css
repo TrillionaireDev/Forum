@@ -476,3 +476,21 @@ html, body {
     max-width: 600px;
   }
 }
+
+
+.post-content{
+  display:none;
+  margin-top:16px;
+  font-size:1rem;
+  line-height:1.5;
+  color:#d0d0d0;
+}
+
+.floating-post.expanded .post-content{
+  display:block;
+}
+
+.floating-post.expanded{
+  max-width:420px;
+  z-index:50;
+}
