@@ -139,3 +139,14 @@ function resetPosts() {
   expandedPost = null;
   startFloatingPosts();
 }
+
+document.addEventListener("click", (e) => {
+  const post = e.target.closest(".floating-post");
+  if (!post) return;
+
+  expandPost(post);
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+  startFloatingPosts();
+});
