@@ -494,3 +494,11 @@ html, body {
   max-width:420px;
   z-index:50;
 }
+
+.floating-post .post-content{
+  display:none !important;
+}
+
+.floating-post.expanded .post-content{
+  display:block !important;
+}
